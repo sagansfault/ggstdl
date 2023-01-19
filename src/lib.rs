@@ -22,6 +22,7 @@ pub struct Move {
     pub active: String,
     pub recovery: String,
     pub onblock: String,
+    pub invuln: String,
 }
 
 pub async fn load() -> Result<Vec<Character>, Box<dyn Error>> {
@@ -79,6 +80,7 @@ fn append_normals(character: &mut Character, document: &Html) -> Result<(), Box<
         let active = v.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
         let recovery = v.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
         let onblock = v.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
+        let invuln = v.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
         let name = move_ele.inner_html();
         let m = Move {
             name,
@@ -88,6 +90,7 @@ fn append_normals(character: &mut Character, document: &Html) -> Result<(), Box<
             active,
             recovery,
             onblock,
+            invuln,
         };
         moves.push(m);
     }
@@ -114,6 +117,7 @@ fn append_specials(character: &mut Character, document: &Html) -> Result<(), Box
         let active = v.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
         let recovery = v.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
         let onblock = v.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
+        let invuln = v.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
         let name = move_ele.inner_html();
         let m = Move {
             name,
@@ -123,6 +127,7 @@ fn append_specials(character: &mut Character, document: &Html) -> Result<(), Box
             active,
             recovery,
             onblock,
+            invuln,
         };
         moves.push(m);
     }
@@ -148,6 +153,7 @@ fn append_overdrives(character: &mut Character, document: &Html) -> Result<(), B
         let active = v.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
         let recovery = v.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
         let onblock = v.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
+        let invuln = v.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
         let name = move_ele.inner_html();
         let m = Move {
             name,
@@ -157,6 +163,7 @@ fn append_overdrives(character: &mut Character, document: &Html) -> Result<(), B
             active,
             recovery,
             onblock,
+            invuln,
         };
         moves.push(m);
     }
