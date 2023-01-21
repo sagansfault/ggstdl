@@ -3,7 +3,7 @@ use regex::Regex;
 use resolver::move_import::MOVE_IMPORT_RESOLVERS;
 use scraper::Html;
 
-mod resolver;
+pub mod resolver;
 
 #[derive(Debug)]
 pub struct Character {
