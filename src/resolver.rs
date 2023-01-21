@@ -224,7 +224,7 @@ pub mod move_search {
                     (r"/(236K(&|\*))/gmi", "Launched Servant"),
                     (r"/(236K|shoot|kick)/gmi", "236K"),
                     (r"/(236P|summon|pull)/gmi", "236P"),
-                    (r"/(236\[P\]|((pull|summon)\s*hold)))/gmi", "236[P]"),
+                    (r"/(236\[P\]|((pull|summon)\s*hold))/gmi", "236[P]"),
                     (r"/(pick|2P)/gmi", "2P"),
                     (r"/(throw|6(P|K|S|HS?|D))/gmi", "Throw Servant"),
                     (r"/(drop|release)/gmi", "Release Servant"),
