@@ -386,7 +386,7 @@ pub mod move_search {
             CharacterId::MAY => {
                 vec![
                     (r"/(\[4\]6S|s\s*dolphin)/gmi", "[4]6S"),
-                    (r"/(\[4\]6HS?|s\hs?*dolphin)/gmi", "[4]6H"),
+                    (r"/(\[4\]6HS?|hs?*dolphin)/gmi", "[4]6H"),
                     (r"/(\[2\]8S|up\s*s\s*dolphin)/gmi", "[2]8S"),
                     (r"/(\[2\]8HS?|up\s*hs?\s*dolphin)/gmi", "[2]8H"),
                     (r"/(ok|overhead|kiss\623K|command|grab)/gmi", "Overhead Kiss"),
