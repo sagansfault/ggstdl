@@ -33,7 +33,14 @@ pub mod move_import {
                 let row1 = iter.next().unwrap();
                 let row2 = iter.next().unwrap();
                 let mut moves: Vec<Move> = vec![];
-                let (version_name, damage, guard, startup, active, recovery, onblock, invuln) = versioned_row_parser(row1);
+                let (version_name, 
+                    damage, 
+                    guard, 
+                    startup, 
+                    active, 
+                    recovery, 
+                    onblock, 
+                    invuln) = versioned_row_parser(row1).expect(format!("could not load moves for {}", name).as_str());
                 let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(Regex::new(format!("/({})/gmi", version_name).as_str()).unwrap());
                 moves.push(Move {
                     name: version_name,
@@ -46,7 +53,14 @@ pub mod move_import {
                     onblock,
                     invuln,
                 });
-                let (_, damage, guard, startup, active, recovery, onblock, invuln) = versioned_row_parser(row2);
+                let (_, 
+                    damage, 
+                    guard, 
+                    startup, 
+                    active, 
+                    recovery, 
+                    onblock, 
+                    invuln) = versioned_row_parser(row2).expect(format!("could not load moves for {}", name).as_str());
                 let version_name = String::from("SA Fire");
                 let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(Regex::new(format!("/({})/gmi", version_name).as_str()).unwrap());
                 moves.push(Move {
@@ -97,7 +111,13 @@ pub mod move_import {
             if name.contains("100T") {
                 let rows: Vec<ElementRef> = move_table.select(&ROW_SELECTOR).peekable().collect();
                 if let Some(data_row) = rows.iter().skip(1).next() {
-                    let (damage, guard, startup, active, recovery, onblock, invuln) = standard_row_parser(data_row);
+                    let (damage, 
+                        guard, 
+                        startup, 
+                        active, 
+                        recovery, 
+                        onblock, 
+                        invuln) = standard_row_parser(data_row).expect(format!("could not load moves for {}", name).as_str());
                     let regex = get_binding_regex(character.id, name.to_string()).unwrap_or(Regex::new(format!("/({})/gmi", name).as_str()).unwrap());
                     return Some(vec![Move { name: String::from(name), matcher: regex, guard, damage, startup, active, recovery, onblock, invuln }])
                 }
@@ -119,7 +139,13 @@ pub mod move_import {
         let rows: Vec<ElementRef> = move_table.select(&ROW_SELECTOR).peekable().collect();
         if rows.len() == 2 {
             if let Some(data_row) = rows.iter().skip(1).next() {
-                let (damage, guard, startup, active, recovery, onblock, invuln) = standard_row_parser(data_row);
+                let (damage, 
+                    guard, 
+                    startup, 
+                    active, 
+                    recovery, 
+                    onblock, 
+                    invuln) = standard_row_parser(data_row).expect(format!("could not load moves for {}", name).as_str());
                 let regex = get_binding_regex(character.id, name.to_string()).unwrap_or(Regex::new(format!("/({})/gmi", name).as_str()).unwrap());
                 return Some(vec![Move { name: String::from(name), matcher: regex, guard, damage, startup, active, recovery, onblock, invuln }]);
             }
@@ -127,14 +153,21 @@ pub mod move_import {
         None
     }
 
-    fn versioned_rows_resolver(character: &Character, _: &str, move_table: ElementRef) -> Option<Vec<Move>> {
+    fn versioned_rows_resolver(character: &Character, name: &str, move_table: ElementRef) -> Option<Vec<Move>> {
         let rows: Vec<ElementRef> = move_table.select(&ROW_SELECTOR).peekable().collect();
         if rows.len() > 2 {
             let mut iter = rows.iter();
             iter.next();
             let mut moves: Vec<Move> = vec![];
             for data_row in iter {
-                let (version_name, damage, guard, startup, active, recovery, onblock, invuln) = versioned_row_parser(data_row);
+                let (version_name, 
+                    damage, 
+                    guard, 
+                    startup, 
+                    active, 
+                    recovery, 
+                    onblock, 
+                    invuln) = versioned_row_parser(data_row).expect(format!("could not load moves for {}", name).as_str());
                 let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(Regex::new(format!("/({})/gmi", version_name).as_str()).unwrap());
                 moves.push(Move { name: version_name, matcher: regex, guard, damage, startup, active, recovery, onblock, invuln });
             }
@@ -143,29 +176,29 @@ pub mod move_import {
         None
     }
 
-    fn standard_row_parser(row: &ElementRef) -> (String, String, String, String, String, String, String) {
+    fn standard_row_parser(row: &ElementRef) -> Option<(String, String, String, String, String, String, String)> {
         let mut vals = row.select(&VAL_SELECTOR);
-        let damage = vals.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
-        let guard = vals.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
-        let startup = vals.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
-        let active = vals.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
-        let recovery = vals.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
-        let onblock = vals.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
-        let invuln = vals.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
-        (damage, guard, startup, active, recovery, onblock, invuln)
+        let damage = vals.next().map(|v| v.inner_html())?;
+        let guard = vals.next().map(|v| v.inner_html())?;
+        let startup = vals.next().map(|v| v.inner_html())?;
+        let active = vals.next().map(|v| v.inner_html())?;
+        let recovery = vals.next().map(|v| v.inner_html())?;
+        let onblock = vals.next().map(|v| v.inner_html())?;
+        let invuln = vals.next().map(|v| v.inner_html())?;
+        Some((damage, guard, startup, active, recovery, onblock, invuln))
     }
 
-    fn versioned_row_parser(row: &ElementRef) -> (String, String, String, String, String, String, String, String) {
+    fn versioned_row_parser(row: &ElementRef) -> Option<(String, String, String, String, String, String, String, String)> {
         let mut vals = row.select(&VAL_SELECTOR);
-        let version_name = row.select(&NAME_SELECTOR).next().unwrap().inner_html();
-        let damage = vals.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
-        let guard = vals.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
-        let startup = vals.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
-        let active = vals.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
-        let recovery = vals.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
-        let onblock = vals.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
-        let invuln = vals.next().map(|v| v.inner_html()).unwrap_or(String::from(""));
-        (version_name, damage, guard, startup, active, recovery, onblock, invuln)
+        let version_name = row.select(&NAME_SELECTOR).next()?.inner_html();
+        let damage = vals.next().map(|v| v.inner_html())?;
+        let guard = vals.next().map(|v| v.inner_html())?;
+        let startup = vals.next().map(|v| v.inner_html())?;
+        let active = vals.next().map(|v| v.inner_html())?;
+        let recovery = vals.next().map(|v| v.inner_html())?;
+        let onblock = vals.next().map(|v| v.inner_html())?;
+        let invuln = vals.next().map(|v| v.inner_html())?;
+        Some((version_name, damage, guard, startup, active, recovery, onblock, invuln))
     }
 }
 
