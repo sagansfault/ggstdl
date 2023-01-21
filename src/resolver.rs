@@ -635,8 +635,8 @@ pub mod move_search {
                     (r"/(1080P)/gmi", "1080P"),
 
                     (r"/(beam|burn|236236K)/gmi", "236236K Level 1"),
-                    (r"/((beam|burn|236236K)\s*(level|lv|lvl)?\s*2))/gmi", "236236K Level 2"),
-                    (r"/((beam|burn|236236K)\s*(level|lv|lvl)?\s*3))/gmi", "236236K Level 3"),
+                    (r"/((beam|burn|236236K)\s*(level|lv|lvl)?\s*2)/gmi", "236236K Level 2"),
+                    (r"/((beam|burn|236236K)\s*(level|lv|lvl)?\s*3)/gmi", "236236K Level 3"),
                 ]
             },
             CharacterId::BRIDGET => {
