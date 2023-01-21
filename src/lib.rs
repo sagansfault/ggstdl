@@ -52,6 +52,16 @@ pub struct Move {
     pub invuln: String,
 }
 
+impl Move {
+    pub fn format(&self, verbose: bool) -> String {
+        if verbose {
+            format!("({}) g={}, s={}, a={}, r={}, b={}, i={}", self.name, self.guard, self.startup, self.active, self.recovery, self.onblock, self.invuln)
+        } else {
+            format!("({}) s={}, a={}, r={}, b={}", self.name, self.startup, self.active, self.recovery, self.onblock)
+        }
+    }
+}
+
 pub async fn load() -> Result<Vec<Character>, Box<dyn Error>> {
     let mut characters: Vec<Character> = vec![
         Character::new(CharacterId::TESTAMENT, r"/test/gmi", "https://www.dustloop.com/w/GGST/Testament"),
