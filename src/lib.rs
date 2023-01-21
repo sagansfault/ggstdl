@@ -144,8 +144,3 @@ fn select_parse<'a>(character: &Character, move_selector: &'a str, data_selector
     }
     Ok(moves)
 }
-
-#[tokio::test]
-async fn test() {
-    let v = load().await;
-}
