@@ -6,11 +6,6 @@ use scraper::Html;
 mod resolver;
 
 #[derive(Debug)]
-pub struct CharacterData {
-    characters: Vec<Character>
-}
-
-#[derive(Debug)]
 pub struct Character {
     pub dustloop: String,
     pub id: CharacterId,
