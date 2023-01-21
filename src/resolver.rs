@@ -190,6 +190,7 @@ pub mod move_import {
 
     fn versioned_row_parser(row: &ElementRef) -> Option<(String, String, String, String, String, String, String, String)> {
         let mut vals = row.select(&VAL_SELECTOR);
+        println!("{}", row.inner_html());
         let version_name = row.select(&NAME_SELECTOR).next()?.inner_html();
         let damage = vals.next().map(|v| v.inner_html())?;
         let guard = vals.next().map(|v| v.inner_html())?;
