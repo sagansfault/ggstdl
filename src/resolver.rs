@@ -389,7 +389,7 @@ pub mod move_search {
                     (r"/(\[4\]6HS?|hs?*dolphin)/gmi", "[4]6H"),
                     (r"/(\[2\]8S|up\s*s\s*dolphin)/gmi", "[2]8S"),
                     (r"/(\[2\]8HS?|up\s*hs?\s*dolphin)/gmi", "[2]8H"),
-                    (r"/(ok|overhead|kiss\623K|command|grab)/gmi", "Overhead Kiss"),
+                    (r"/(ok|overhead|kiss|623K|command|grab)/gmi", "Overhead Kiss"),
                     (r"/(214P)/gmi", "214P"),
                     (r"/(beach|ball|214K)/gmi", "214K"),
                     (r"/(yamada|236236S)/gmi", "Great Yamada Attack"),
