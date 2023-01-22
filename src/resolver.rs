@@ -481,11 +481,11 @@ pub mod move_search {
             },
             CharacterId::HAPPYCHAOS => {
                 vec![
-                    (r"(?i)(^(H)\s?$)", "At The Ready"),
+                    (r"(?i)(^(h)\s?$)", "At The Ready"),
                     (r"(?i)(^(\]H\[|fire|shot)\s?$)", "Fire"),
                     (r"(?i)((atr|236S|flip))", "At The Ready 236S"),
-                    (r"(?i)(^(steady|aim|sa|214S)\s?$)", "Steady Aim"),
-                    (r"(?i)((steady|aim|sa|214S|(steady aim))\s*(shot|fire|h))", "Fire"),
+                    (r"(?i)(^(steady|aim|sa|214S|steady\saim)\s?$)", "Steady Aim"),
+                    (r"(?i)((steady|aim|sa|214S|steady\saim)\s*(shot|fire|h))", "SA Fire"),
                     (r"(?i)((cancel|2H|stow))", "236S 2H"),
                     (r"(?i)(((steady|aim)\s*(cancel|stow)))", "214S 214S"),
                     (r"(?i)((reload|22P))", "Reload"),
