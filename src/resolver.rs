@@ -329,8 +329,8 @@ pub mod move_search {
                     (r"(?i)((j.?D\s*(level|lv|lvl)?\s*3))", "j.D Level 3"),
                     (r"(?i)((j.?D\s*(level|lv|lvl)?\s*BR))", "j.D Level BR"),
 
+                    (r"(?i)((214K|fukyo\s*back))", "214K"), // This move must come before fukyo forward so it matches first with "back" then optionally nothing for next
                     (r"(?i)((236K|fukyo(\s*forward)?))", "236K"),
-                    (r"(?i)((214K|fukyo\s*back))", "214K"),
 
                     (r"(?i)((236S|clone|zarameyuki))", "Zarameyuki"),
 
