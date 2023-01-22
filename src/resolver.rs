@@ -186,26 +186,26 @@ pub mod move_import {
 
     fn standard_row_parser(row: &ElementRef) -> Option<(String, String, String, String, String, String, String)> {
         let mut vals = row.select(&VAL_SELECTOR);
-        let damage = vals.next().map(|v| v.inner_html())?;
-        let guard = vals.next().map(|v| v.inner_html())?;
-        let startup = vals.next().map(|v| v.inner_html())?;
-        let active = vals.next().map(|v| v.inner_html())?;
-        let recovery = vals.next().map(|v| v.inner_html())?;
-        let onblock = vals.next().map(|v| v.inner_html())?;
-        let invuln = vals.next().map(|v| v.inner_html())?;
+        let damage = vals.next().map(|v| v.inner_html())?.trim().to_string();
+        let guard = vals.next().map(|v| v.inner_html())?.trim().to_string();
+        let startup = vals.next().map(|v| v.inner_html())?.trim().to_string();
+        let active = vals.next().map(|v| v.inner_html())?.trim().to_string();
+        let recovery = vals.next().map(|v| v.inner_html())?.trim().to_string();
+        let onblock = vals.next().map(|v| v.inner_html())?.trim().to_string();
+        let invuln = vals.next().map(|v| v.inner_html())?.trim().to_string();
         Some((damage, guard, startup, active, recovery, onblock, invuln))
     }
 
     fn versioned_row_parser(row: &ElementRef) -> Option<(String, String, String, String, String, String, String, String)> {
         let mut vals = row.select(&VAL_SELECTOR);
         let version_name = row.select(&NAME_SELECTOR).next()?.inner_html().trim().to_string();
-        let damage = vals.next().map(|v| v.inner_html())?;
-        let guard = vals.next().map(|v| v.inner_html())?;
-        let startup = vals.next().map(|v| v.inner_html())?;
-        let active = vals.next().map(|v| v.inner_html())?;
-        let recovery = vals.next().map(|v| v.inner_html())?;
-        let onblock = vals.next().map(|v| v.inner_html())?;
-        let invuln = vals.next().map(|v| v.inner_html())?;
+        let damage = vals.next().map(|v| v.inner_html())?.trim().to_string();
+        let guard = vals.next().map(|v| v.inner_html())?.trim().to_string();
+        let startup = vals.next().map(|v| v.inner_html())?.trim().to_string();
+        let active = vals.next().map(|v| v.inner_html())?.trim().to_string();
+        let recovery = vals.next().map(|v| v.inner_html())?.trim().to_string();
+        let onblock = vals.next().map(|v| v.inner_html())?.trim().to_string();
+        let invuln = vals.next().map(|v| v.inner_html())?.trim().to_string();
         Some((version_name, damage, guard, startup, active, recovery, onblock, invuln))
     }
 }
