@@ -330,14 +330,14 @@ pub mod move_search {
                     (r"(?i)((j.?D\s*(level|lv|lvl)?\s*BR))", "j.D Level BR"),
 
                     (r"(?i)((236K|fukyo(\s*forward)?))", "236K"),
-                    (r"(?i)((214K|fukyo(\s*back)))", "213K"),
+                    (r"(?i)((214K|fukyo\s*back))", "213K"),
 
                     (r"(?i)((236S|clone|zarameyuki))", "Zarameyuki"),
 
                     (r"(?i)((214HS?|beyblade|kamuriyuki))", "Kamuriyuki"),
 
                     (r"(?i)((623HS?|shizuriyuki|dp))", "623H"),
-                    (r"(?i)((623HS?HS?|((shizuriyuki|dp)\s*follow)))", "623HH"),
+                    (r"(?i)((623HS?HS?|((shizuriyuki|dp)\s*(follow|HS?))))", "623HH"),
 
                     (r"(?i)((623P|bite|command|blood))", "Bloodsucking Universe"),
 
