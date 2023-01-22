@@ -80,7 +80,7 @@ pub async fn load() -> Result<Vec<Character>, Box<dyn Error>> {
         Character::new(CharacterId::ANJI, r"(?i)(anji)", "https://www.dustloop.com/w/GGST/Anji_Mito"),
         Character::new(CharacterId::LEO, r"(?i)(leo)", "https://www.dustloop.com/w/GGST/Leo_Whitefang"),
         Character::new(CharacterId::FAUST, r"(?i)(faust)", "https://www.dustloop.com/w/GGST/Faust"),
-        Character::new(CharacterId::AXL, r"(?i)(axl)", "https://www.dustloop.com/w/GGST/Axl_low"),
+        Character::new(CharacterId::AXL, r"(?i)(axl)", "https://www.dustloop.com/w/GGST/Axl_Low"),
         Character::new(CharacterId::POTEMKIN, r"(?i)(pot)", "https://www.dustloop.com/w/GGST/Potemkin"),
         Character::new(CharacterId::RAMLETHAL, r"(?i)(ram)", "https://www.dustloop.com/w/GGST/Ramlethal_Valentine"),
         Character::new(CharacterId::GIO, r"(?i)(gio)", "https://www.dustloop.com/w/GGST/Giovanna"),
@@ -94,6 +94,7 @@ pub async fn load() -> Result<Vec<Character>, Box<dyn Error>> {
         append_normals(character, &document)?;
         append_specials(character, &document)?;
         append_overdrives(character, &document)?;
+        println!("Loaded moves for {:?} : {}", character.id, character.moves.len());
     }
 
     Ok(characters)
@@ -134,8 +135,10 @@ fn select_parse<'a>(character: &Character, move_selector: &'a str, data_selector
     let mut moves: Vec<Move> = vec![];
     for (move_ele, data_ele) in zipped {
         let name = move_ele.inner_html();
+        let name = name.trim();
+        //println!("{}", name);
         for resolver in MOVE_IMPORT_RESOLVERS {
-            let res = resolver(character, name.as_str(), data_ele);
+            let res = resolver(character, name, data_ele);
             if let Some(mut moves_res) = res {
                 moves.append(&mut moves_res);
                 break;
@@ -143,4 +146,9 @@ fn select_parse<'a>(character: &Character, move_selector: &'a str, data_selector
         }
     }
     Ok(moves)
+}
+
+#[tokio::test]
+async fn test() {
+    let _ = load().await;
 }

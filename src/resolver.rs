@@ -10,7 +10,7 @@ pub mod move_import {
         work_around_5D_resolver,
         chaos_fire_resolver,
         bridget_normal_resolver,
-        faust_100T_resolver,
+        faust_100T_and_mini_faust_resolver,
         leo_guard_resolver,
         jacko_cheer_resolver,
 
@@ -26,7 +26,10 @@ pub mod move_import {
 
     // TODO add special resolver for 5D
     fn work_around_5D_resolver(character: &Character, name: &str, move_table: ElementRef) -> Option<Vec<Move>> {
-        Some(vec![])
+        if name.contains("5D") {
+            return Some(vec![]);
+        }
+        None
     }
 
      fn chaos_fire_resolver(character: &Character, name: &str, move_table: ElementRef) -> Option<Vec<Move>> {
@@ -34,6 +37,7 @@ pub mod move_import {
             if name.contains("Steady Aim / Fire") {
                 let rows: Vec<ElementRef> = move_table.select(&ROW_SELECTOR).peekable().collect();
                 let mut iter = rows.iter();
+                iter.next();
                 let row1 = iter.next().unwrap();
                 let row2 = iter.next().unwrap();
                 let mut moves: Vec<Move> = vec![];
@@ -45,7 +49,7 @@ pub mod move_import {
                     recovery, 
                     onblock, 
                     invuln) = versioned_row_parser(row1).expect(format!("could not load moves for {}", name).as_str());
-                let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(Regex::new(format!("/({}))", version_name).as_str()).unwrap());
+                let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(Regex::new(format!("(?i)({})", version_name).as_str()).unwrap());
                 moves.push(Move {
                     name: version_name,
                     matcher: regex,
@@ -66,7 +70,7 @@ pub mod move_import {
                     onblock, 
                     invuln) = versioned_row_parser(row2).expect(format!("could not load moves for {}", name).as_str());
                 let version_name = String::from("SA Fire");
-                let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(Regex::new(format!("/({}))", version_name).as_str()).unwrap());
+                let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(Regex::new(format!("(?i)({})", version_name).as_str()).unwrap());
                 moves.push(Move {
                     name: version_name,
                     matcher: regex,
@@ -110,9 +114,9 @@ pub mod move_import {
         None
      }
 
-     fn faust_100T_resolver(character: &Character, name: &str, move_table: ElementRef) -> Option<Vec<Move>> {
+     fn faust_100T_and_mini_faust_resolver(character: &Character, name: &str, move_table: ElementRef) -> Option<Vec<Move>> {
         if character.id == CharacterId::FAUST {
-            if name.contains("100T") {
+            if name.contains("100T") || name.contains("Mini") {
                 let rows: Vec<ElementRef> = move_table.select(&ROW_SELECTOR).peekable().collect();
                 if let Some(data_row) = rows.iter().skip(1).next() {
                     let (damage, 
@@ -122,7 +126,7 @@ pub mod move_import {
                         recovery, 
                         onblock, 
                         invuln) = standard_row_parser(data_row).expect(format!("could not load moves for {}", name).as_str());
-                    let regex = get_binding_regex(character.id, name.to_string()).unwrap_or(Regex::new(format!("/({}))", name).as_str()).unwrap());
+                    let regex = get_binding_regex(character.id, name.to_string()).unwrap_or(Regex::new(format!("(?i)({})", name).as_str()).unwrap());
                     return Some(vec![Move { name: String::from(name), matcher: regex, guard, damage, startup, active, recovery, onblock, invuln }])
                 }
             }
@@ -150,7 +154,7 @@ pub mod move_import {
                     recovery, 
                     onblock, 
                     invuln) = standard_row_parser(data_row).expect(format!("could not load moves for {}", name).as_str());
-                let regex = get_binding_regex(character.id, name.to_string()).unwrap_or(Regex::new(format!("/({}))", name).as_str()).unwrap());
+                let regex = get_binding_regex(character.id, name.to_string()).unwrap_or(Regex::new(regex::escape(format!("(?i)({})", name).as_str()).as_str()).unwrap());
                 return Some(vec![Move { name: String::from(name), matcher: regex, guard, damage, startup, active, recovery, onblock, invuln }]);
             }
         }
@@ -172,7 +176,7 @@ pub mod move_import {
                     recovery, 
                     onblock, 
                     invuln) = versioned_row_parser(data_row).expect(format!("could not load moves for {}", name).as_str());
-                let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(Regex::new(format!("/({}))", version_name).as_str()).unwrap());
+                let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(Regex::new(regex::escape(format!("(?i)({})", version_name).as_str()).as_str()).unwrap());
                 moves.push(Move { name: version_name, matcher: regex, guard, damage, startup, active, recovery, onblock, invuln });
             }
             return Some(moves);
@@ -194,7 +198,7 @@ pub mod move_import {
 
     fn versioned_row_parser(row: &ElementRef) -> Option<(String, String, String, String, String, String, String, String)> {
         let mut vals = row.select(&VAL_SELECTOR);
-        let version_name = row.select(&NAME_SELECTOR).next()?.inner_html();
+        let version_name = row.select(&NAME_SELECTOR).next()?.inner_html().trim().to_string();
         let damage = vals.next().map(|v| v.inner_html())?;
         let guard = vals.next().map(|v| v.inner_html())?;
         let startup = vals.next().map(|v| v.inner_html())?;
@@ -230,7 +234,7 @@ pub mod move_search {
     pub fn get_binding_regex(character_id: CharacterId, official_name: String) -> Option<Regex> {
         MOVE_SEARCH_MATCHERS.get(&character_id).map(|v| {
             for ele in v {
-                if ele.1 == official_name {
+                if ele.1.eq_ignore_ascii_case(official_name.as_str()) {
                     return Some(ele.0.clone());
                 }
             }
