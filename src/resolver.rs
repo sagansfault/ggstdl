@@ -246,12 +246,12 @@ pub mod move_search {
         match character_id {
             CharacterId::TESTAMENT => {
                 vec![
-                    (r"(?i)((236HS?|((j.?\s*)?(light)?\s*hs?\s*reaper)))", "236H"),
-                    (r"(?i)((236\{HS?\}|((j.?\s*)?(med(ium)?)\s*hs?\s*reaper)))", "236{H}"),
-                    (r"(?i)((236\[HS?\]|((j.?\s*)?(hard|charged?)\s*hs?\s*reaper)))", "236[H]"),
-                    (r"(?i)(?i)(?i)((236S|((j.?\s*)?(light)?\s*s\s*reaper)))", "236S"),
-                    (r"(?i)(?i)(?i)(?i)((236\{S\}|((j.?\s*)?(med(ium)?)\s*s\s*reaper)))", "236{S}"),
-                    (r"(?i)((236\[S\]|((j.?\s*)?(hard|charged?)\s*s\s*reaper)))", "236[S]"),
+                    (r"(?i)(^(j.?)?(236HS?|hs?\s*(grave)?\s*reaper)$)", "236H"),
+                    (r"(?i)(236\{hs?\}|((med)\s*(j.?)?(236HS?|hs?\s*(grave)?\s*reaper)))", "236{H}"),
+                    (r"(?i)(236\[hs?\]|((charge|heavy|hard)\s*(j.?)?(236HS?|hs?\s*(grave)?\s*reaper)))", "236[H]"),
+                    (r"(?i)(^(j.?)?(236S|s\s*(grave)?\s*reaper)$)", "236H"),
+                    (r"(?i)(236\{s\}|((med)\s*(j.?)?(236S|s\s*(grave)?\s*reaper)))", "236{H}"),
+                    (r"(?i)(236\[s\]|((charge|heavy|hard)\s*(j.?)?(236S|s\s*(grave)?\s*reaper)))", "236[H]"),
                     (r"(?i)((crow|unholy|diver))", "Unholy Diver"),
                     (r"(?i)((tele))", "Possession"),
                     (r"(?i)((214S|s\s*arbiter))", "214S"),
@@ -274,69 +274,70 @@ pub mod move_search {
                     (r"(?i)((defend|block|214S))", "Defend Command"),
                     (r"(?i)((countdown|bomb|214HS?))", "Countdown"),
                     (r"(?i)((632146P|F.?E.?D|forever\s*elysion\s*driver))", "Forever Elysion Driver"),
-                    (r"(?i)((s\s*cheer|236236S))", "Cheer"),
+                    (r"(?i)((s\s*cheer|236236S))", "Cheer Servant On S"),
+                    (r"(?i)((hs?\s*cheer|236236HS?))", "Cheer Servant On H"),
                 ]
             },
             CharacterId::NAGORIYUKI => {
                 vec![
-                    (r"(?i)((f.?S(\s*(level|lv|lvl)?\s*1)?))", "f.S Level 1"),
+                    (r"(?i)(^(f.?S(\s*(level|lv|lvl)?\s*1)?)\s?$)", "f.S Level 1"),
                     (r"(?i)((f.?S\s*(level|lv|lvl)?\s*2))", "f.S Level 2"),
                     (r"(?i)((f.?S\s*(level|lv|lvl)?\s*3))", "f.S Level 3"),
                     (r"(?i)((f.?S\s*(level|lv|lvl)?\s*BR))", "f.S Level BR"),
 
-                    (r"(?i)((f.?SS(\s*(level|lv|lvl)?\s*1)?))", "f.SS Level 1"),
+                    (r"(?i)(^(f.?SS(\s*(level|lv|lvl)?\s*1)?)\s?$)", "f.SS Level 1"),
                     (r"(?i)((f.?SS\s*(level|lv|lvl)?\s*2))", "f.SS Level 2"),
                     (r"(?i)((f.?SS\s*(level|lv|lvl)?\s*3))", "f.SS Level 3"),
                     (r"(?i)((f.?SS\s*(level|lv|lvl)?\s*BR))", "f.SS Level BR"),
 
-                    (r"(?i)((f.?SSS(\s*(level|lv|lvl)?\s*1)?))", "f.SSS Level 1"),
+                    (r"(?i)(^(f.?SSS(\s*(level|lv|lvl)?\s*1)?)\s?$)", "f.SSS Level 1"),
                     (r"(?i)((f.?SSS\s*(level|lv|lvl)?\s*2))", "f.SSS Level 2"),
                     (r"(?i)((f.?SSS\s*(level|lv|lvl)?\s*3))", "f.SSS Level 3"),
                     (r"(?i)((f.?SSS\s*(level|lv|lvl)?\s*BR))", "f.SSS Level BR"),
 
-                    (r"(?i)((5?H(\s*(level|lv|lvl)?\s*1)?))", "5H Level 1"),
+                    (r"(?i)(^(5?H(\s*(level|lv|lvl)?\s*1)?)\s?$)", "5H Level 1"),
                     (r"(?i)((5?H\s*(level|lv|lvl)?\s*2))", "5H Level 2"),
                     (r"(?i)((5?H\s*(level|lv|lvl)?\s*3))", "5H Level 3"),
                     (r"(?i)((5?H\s*(level|lv|lvl)?\s*BR))", "5H Level BR"),
 
-                    (r"(?i)((2S(\s*(level|lv|lvl)?\s*1)?))", "2S Level 1"),
+                    (r"(?i)(^(2S(\s*(level|lv|lvl)?\s*1)?)\s?$)", "2S Level 1"),
                     (r"(?i)((2S\s*(level|lv|lvl)?\s*2))", "2S Level 2"),
                     (r"(?i)((2S\s*(level|lv|lvl)?\s*3))", "2S Level 3"),
                     (r"(?i)((2S\s*(level|lv|lvl)?\s*BR))", "2S Level BR"),
 
-                    (r"(?i)((2H(\s*(level|lv|lvl)?\s*1)?))", "2H Level 1"),
+                    (r"(?i)(^(2H(\s*(level|lv|lvl)?\s*1)?)\s?$)", "2H Level 1"),
                     (r"(?i)((2H\s*(level|lv|lvl)?\s*2))", "2H Level 2"),
                     (r"(?i)((2H\s*(level|lv|lvl)?\s*3))", "2H Level 3"),
                     (r"(?i)((2H\s*(level|lv|lvl)?\s*BR))", "2H Level BR"),
 
-                    (r"(?i)((6H(\s*(level|lv|lvl)?\s*1)?))", "6H Level 1"),
+                    (r"(?i)(^(6H(\s*(level|lv|lvl)?\s*1)?)\s?$)", "6H Level 1"),
                     (r"(?i)((6H\s*(level|lv|lvl)?\s*2))", "6H Level 2"),
                     (r"(?i)((6H\s*(level|lv|lvl)?\s*3))", "6H Level 3"),
                     (r"(?i)((6H\s*(level|lv|lvl)?\s*BR))", "6H Level BR"),
 
-                    (r"(?i)((j.?S(\s*(level|lv|lvl)?\s*1)?))", "j.S Level 1"),
+                    (r"(?i)(^(j.?S(\s*(level|lv|lvl)?\s*1)?)\s?$)", "j.S Level 1"),
                     (r"(?i)((j.?S\s*(level|lv|lvl)?\s*2))", "j.S Level 2"),
                     (r"(?i)((j.?S\s*(level|lv|lvl)?\s*3))", "j.S Level 3"),
                     (r"(?i)((j.?S\s*(level|lv|lvl)?\s*BR))", "j.S Level BR"),
 
-                    (r"(?i)((j.?H(\s*(level|lv|lvl)?\s*1)?))", "j.H Level 1"),
+                    (r"(?i)(^(j.?H(\s*(level|lv|lvl)?\s*1)?)\s?$)", "j.H Level 1"),
                     (r"(?i)((j.?H\s*(level|lv|lvl)?\s*2))", "j.H Level 2"),
                     (r"(?i)((j.?H\s*(level|lv|lvl)?\s*3))", "j.H Level 3"),
                     (r"(?i)((j.?H\s*(level|lv|lvl)?\s*BR))", "j.H Level BR"),
 
-                    (r"(?i)((j.?D(\s*(level|lv|lvl)?\s*1)?))", "j.D Level 1"),
+                    (r"(?i)(^(j.?D(\s*(level|lv|lvl)?\s*1)?)\s?$)", "j.D Level 1"),
                     (r"(?i)((j.?D\s*(level|lv|lvl)?\s*2))", "j.D Level 2"),
                     (r"(?i)((j.?D\s*(level|lv|lvl)?\s*3))", "j.D Level 3"),
                     (r"(?i)((j.?D\s*(level|lv|lvl)?\s*BR))", "j.D Level BR"),
 
-                    (r"(?i)((214K|fukyo\s*back))", "214K"), // This move must come before fukyo forward so it matches first with "back" then optionally nothing for next
+                    (r"(?i)((214K|fukyo\s*back))", "214K"), // Not sure anymore if this needs to come before fukyo forward
                     (r"(?i)((236K|(fukyo(\s*forward))|fukyo$))", "236K"),
 
                     (r"(?i)((236S|clone|zarameyuki))", "Zarameyuki"),
 
                     (r"(?i)((214HS?|beyblade|kamuriyuki))", "Kamuriyuki"),
 
-                    (r"(?i)((623HS?|shizuriyuki|dp))", "623H"),
+                    (r"(?i)((623HS?|^shizuriyuki\s?$|^dp\s?$))", "623H"),
                     (r"(?i)((623HS?HS?|((shizuriyuki|dp)\s*(follow|HS?))))", "623HH"),
 
                     (r"(?i)((623P|bite|command|blood))", "Bloodsucking Universe"),
@@ -369,7 +370,7 @@ pub mod move_search {
                     (r"(?i)((623S|dp|beta))", "623S"),
                     (r"(?i)((j.?(623P|dp|beta)))", "j.623S"),
                     (r"(?i)((236HS?|gamma|clone))", "Gamma Blade"),
-                    (r"(?i)((236S|rekka(\s*1)?|resshou))", "Resshou"),
+                    (r"(?i)(^(236S|rekka(\s*1)?|resshou)\s?$)", "Resshou"),
                     (r"(?i)((rekka\s*2|rokusai))", "Rokusai"),
                     (r"(?i)((senshuu?|rekka\s*3))", "Senshuu"),
                     (r"(?i)((63214S|command|grab))", "Genrou Zan"),
@@ -480,11 +481,11 @@ pub mod move_search {
             },
             CharacterId::HAPPYCHAOS => {
                 vec![
-                    (r"(?i)((H))", "At The Ready"),
-                    (r"(?i)((\]H\[|fire|shot))", "Fire"),
+                    (r"(?i)(^(H)\s?$)", "At The Ready"),
+                    (r"(?i)(^(\]H\[|fire|shot)\s?$)", "Fire"),
                     (r"(?i)((atr|236S|flip))", "At The Ready 236S"),
-                    (r"(?i)((steady|aim))", "Steady Aim"),
-                    (r"(?i)(((steady|aim)\s*(shot|fire)))", "Fire"),
+                    (r"(?i)(^((steady(\s*aim)?)|SA)\s?$)", "Steady Aim"),
+                    (r"(?i)(((steady(\s*aim)?)|SA)\s*(shot|fire))", "Fire"),
                     (r"(?i)((cancel|2H|stow))", "236S 2H"),
                     (r"(?i)(((steady|aim)\s*(cancel|stow)))", "214S 214S"),
                     (r"(?i)((reload|22P))", "Reload"),
@@ -498,17 +499,17 @@ pub mod move_search {
             },
             CharacterId::SIN => {
                 vec![
-                    (r"(?i)((hawk|baker|623S|dp))", "Hawk Baker"),
+                    (r"(?i)(^(hawk|baker|623S|dp)\s$)", "Hawk Baker"),
                     (r"(?i)(((hawk|baker|623S|dp)\s*(~?S|follow)))", "Hawk Baker Follow-up"),
-                    (r"(?i)((elk|hunt|236K))", "236K"),
+                    (r"(?i)(^(elk|hunt|236K)\s$)", "236K"),
                     (r"(?i)(((elk|hunt|236K)\s*(~?K|follow)))", "236K~K"),
-                    (r"(?i)((hoof|stomp|214S))", "214S"),
+                    (r"(?i)(^(hoof|stomp|214S)\s$)", "214S"),
                     (r"(?i)(((hoof|stomp|214S)\s*(~?S|follow)))", "214S~S"),
                     (r"(?i)((gazelle|dash))", "Gazelle Step"),
                     (r"(?i)((food|eat|grow|63214P))", "Still Growing"),
-                    (r"(?i)((rtl|ride|lightning|632146HS?))", "632146H"),
+                    (r"(?i)(^(rtl|ride|lightning|632146HS?)\s$)", "632146H"),
                     (r"(?i)(((rtl|ride|lightning|632146HS?)\s*(~?HS?|follow)))", "632146HH"),
-                    (r"(?i)((barrel|tyrant|236236P))", "236236P"),
+                    (r"(?i)(^(barrel|tyrant|236236P)\s$)", "236236P"),
                     (r"(?i)(((barrel|tyrant|236236P)\s*(~?\[?P\]?|follow)))", "236236P~]P["),
                 ]
             },
@@ -613,7 +614,7 @@ pub mod move_search {
             CharacterId::RAMLETHAL => {
                 vec![
                     (r"(?i)((623P|dp|dauro))", "Dauro"),
-                    (r"(?i)((rekka|214P|erar))", "214P"),
+                    (r"(?i)(^(rekka|214P|erar)\s?$)", "214P"),
                     (r"(?i)(((rekka|214P|erar)\s*2))", "214P 214P"),
                     (r"(?i)(((rekka|214P|erar)\s*3))", "214P 214P 214P"),
                     (r"(?i)((flip|214K|slido))", "214K"),
@@ -663,19 +664,19 @@ pub mod move_search {
                     (r"(?i)((862(HS?)?))", "89632H"),
                     (r"(?i)((j.?\s*(862(HS?)?)))", "j.89632H"),
 
-                    (r"(?i)((drone|214S))", "214S Level 1"),
+                    (r"(?i)(^(drone|214S)\s?$)", "214S Level 1"),
                     (r"(?i)(((drone|214S)\s*(level|lv|lvl)?\s*2))", "214S Level 2"),
                     (r"(?i)(((drone|214S)\s*(level|lv|lvl)?\s*3))", "214S Level 3"),
 
-                    (r"(?i)((gun|mini|skyfish|236S))", "236S Level 1"),
+                    (r"(?i)(^(gun|mini|skyfish|236S)\s?$)", "236S Level 1"),
                     (r"(?i)(((gun|mini|skyfish|236S)\s*(level|lv|lvl)?\s*2))", "236S Level 2"),
                     (r"(?i)(((gun|mini|skyfish|236S)\s*(level|lv|lvl)?\s*3))", "236S Level 3"),
 
-                    (r"(?i)((dwts|down|system|reversal|360P|63214P))", "632146P"),
+                    (r"(?i)((dwts|system|reversal|360P|63214P))", "632146P"),
                     (r"(?i)((720P))", "720P"),
                     (r"(?i)((1080P))", "1080P"),
 
-                    (r"(?i)((beam|burn|236236K))", "236236K Level 1"),
+                    (r"(?i)(^(beam|burn|236236K)\s?$)", "236236K Level 1"),
                     (r"(?i)(((beam|burn|236236K)\s*(level|lv|lvl)?\s*2))", "236236K Level 2"),
                     (r"(?i)(((beam|burn|236236K)\s*(level|lv|lvl)?\s*3))", "236236K Level 3"),
                 ]
