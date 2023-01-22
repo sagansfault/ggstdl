@@ -330,7 +330,7 @@ pub mod move_search {
                     (r"(?i)((j.?D\s*(level|lv|lvl)?\s*BR))", "j.D Level BR"),
 
                     (r"(?i)((236K|fukyo(\s*forward)?))", "236K"),
-                    (r"(?i)((214K|fukyo\s*back))", "213K"),
+                    (r"(?i)((214K|fukyo\s*back))", "214K"),
 
                     (r"(?i)((236S|clone|zarameyuki))", "Zarameyuki"),
 
