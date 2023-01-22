@@ -55,9 +55,9 @@ pub struct Move {
 impl Move {
     pub fn format(&self, verbose: bool) -> String {
         if verbose {
-            format!("{}: g=({}) s=({}) a=({}) r=({}) b=({}) i=({})", self.name, self.guard, self.startup, self.active, self.recovery, self.onblock, self.invuln)
+            format!("{}: d=({}) g=({}) s=({}) a=({}) r=({}) b=({}) i=({})", self.name, self.damage, self.guard, self.startup, self.active, self.recovery, self.onblock, self.invuln)
         } else {
-            format!("{}: s=({}) a=({}) r=({}) b=({})", self.name, self.startup, self.active, self.recovery, self.onblock)
+            format!("{}: d=({}) s=({}) a=({}) r=({}) b=({})", self.name, self.damage, self.startup, self.active, self.recovery, self.onblock)
         }
     }
 }
