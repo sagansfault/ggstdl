@@ -49,7 +49,7 @@ pub mod move_import {
                     recovery, 
                     onblock, 
                     invuln) = versioned_row_parser(row1).expect(format!("could not load moves for {}", name).as_str());
-                let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(Regex::new(format!(r"(?i)(^{}\s$)", regex::escape(version_name.as_str())).as_str()).unwrap());
+                let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(Regex::new(format!(r"(?i)(^{}\s?$)", regex::escape(version_name.as_str())).as_str()).unwrap());
                 moves.push(Move {
                     name: version_name,
                     matcher: regex,
@@ -70,7 +70,7 @@ pub mod move_import {
                     onblock, 
                     invuln) = versioned_row_parser(row2).expect(format!("could not load moves for {}", name).as_str());
                 let version_name = String::from("SA Fire");
-                let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(Regex::new(format!(r"(?i)(^{}\s$)", regex::escape(version_name.as_str())).as_str()).unwrap());
+                let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(Regex::new(format!(r"(?i)(^{}\s?$)", regex::escape(version_name.as_str())).as_str()).unwrap());
                 moves.push(Move {
                     name: version_name,
                     matcher: regex,
@@ -126,7 +126,7 @@ pub mod move_import {
                         recovery, 
                         onblock, 
                         invuln) = standard_row_parser(data_row).expect(format!("could not load moves for {}", name).as_str());
-                    let regex = get_binding_regex(character.id, name.to_string()).unwrap_or(Regex::new(format!(r"(?i)(^{}\s$)", regex::escape(name)).as_str()).unwrap());
+                    let regex = get_binding_regex(character.id, name.to_string()).unwrap_or(Regex::new(format!(r"(?i)(^{}\s?$)", regex::escape(name)).as_str()).unwrap());
                     return Some(vec![Move { name: String::from(name), matcher: regex, guard, damage, startup, active, recovery, onblock, invuln }])
                 }
             }
@@ -154,7 +154,7 @@ pub mod move_import {
                     recovery, 
                     onblock, 
                     invuln) = standard_row_parser(data_row).expect(format!("could not load moves for {}", name).as_str());
-                let regex = get_binding_regex(character.id, name.to_string()).unwrap_or(Regex::new(format!(r"(?i)(^{}\s$)", regex::escape(name)).as_str()).unwrap());
+                let regex = get_binding_regex(character.id, name.to_string()).unwrap_or(Regex::new(format!(r"(?i)(^{}\s?$)", regex::escape(name)).as_str()).unwrap());
                 return Some(vec![Move { name: String::from(name), matcher: regex, guard, damage, startup, active, recovery, onblock, invuln }]);
             }
         }
@@ -176,7 +176,7 @@ pub mod move_import {
                     recovery, 
                     onblock, 
                     invuln) = versioned_row_parser(data_row).expect(format!("could not load moves for {}", name).as_str());
-                let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(Regex::new(format!(r"(?i)(^{}\s$)", regex::escape(version_name.as_str())).as_str()).unwrap());
+                let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(Regex::new(format!(r"(?i)(^{}\s?$)", regex::escape(version_name.as_str())).as_str()).unwrap());
                 moves.push(Move { name: version_name, matcher: regex, guard, damage, startup, active, recovery, onblock, invuln });
             }
             return Some(moves);
@@ -499,17 +499,17 @@ pub mod move_search {
             },
             CharacterId::SIN => {
                 vec![
-                    (r"(?i)(^(hawk|baker|623S|dp)\s$)", "Hawk Baker"),
+                    (r"(?i)(^(hawk|baker|623S|dp)\s?$)", "Hawk Baker"),
                     (r"(?i)(((hawk|baker|623S|dp)\s*(~?S|follow)))", "Hawk Baker Follow-up"),
-                    (r"(?i)(^(elk|hunt|236K)\s$)", "236K"),
+                    (r"(?i)(^(elk|hunt|236K)\s?$)", "236K"),
                     (r"(?i)(((elk|hunt|236K)\s*(~?K|follow)))", "236K~K"),
-                    (r"(?i)(^(hoof|stomp|214S)\s$)", "214S"),
+                    (r"(?i)(^(hoof|stomp|214S)\s?$)", "214S"),
                     (r"(?i)(((hoof|stomp|214S)\s*(~?S|follow)))", "214S~S"),
                     (r"(?i)((gazelle|dash))", "Gazelle Step"),
                     (r"(?i)((food|eat|grow|63214P))", "Still Growing"),
-                    (r"(?i)(^(rtl|ride|lightning|632146HS?)\s$)", "632146H"),
+                    (r"(?i)(^(rtl|ride|lightning|632146HS?)\s?$)", "632146H"),
                     (r"(?i)(((rtl|ride|lightning|632146HS?)\s*(~?HS?|follow)))", "632146HH"),
-                    (r"(?i)(^(barrel|tyrant|236236P)\s$)", "236236P"),
+                    (r"(?i)(^(barrel|tyrant|236236P)\s?$)", "236236P"),
                     (r"(?i)(((barrel|tyrant|236236P)\s*(~?\[?P\]?|follow)))", "236236P~]P["),
                 ]
             },
@@ -563,7 +563,7 @@ pub mod move_search {
                     (r"(?i)((scalpel|thrust|41236K))", "Thrust"),
                     (r"(?i)((pull|back))", "Pull Back"),
                     (r"(?i)((golf|club|hole|41236K\s*HS?))", "Hole in One!"),
-                    (r"(?i)((item|toss|236P|what))", "What Could This Be?"),
+                    (r"(?i)(^(item|toss|236P|what)\s?$)", "What Could This Be?"),
                     (r"(?i)((mmm|mix|236S))", "Mix Mix Mix"),
                     (r"(?i)((snip|command|grab|236HS?))", "Snip Snip Snip"),
                     (r"(?i)(((j.?)?love|j.?236P))", "j.236P"),
@@ -572,8 +572,8 @@ pub mod move_search {
                     (r"(?i)(((k\s*crow)|214K))", "214K"),
                     (r"(?i)(((s\s*crow)|214S))", "214S"),
                     (r"(?i)((bone|wheel|chair|reversal|632146HS?))", "Bone-crushing Excitement"),
-                    (r"(?i)((236236P|item\s*super))", "W-W-What Could This Be?"),
-                    (r"(?i)((236236236236P))", "W-W-W-W-W-W-W-W-W-What Could This Be?"),
+                    (r"(?i)(^(236236P|item\s*super)\s?$)", "W-W-What Could This Be?"),
+                    (r"(?i)(^(236236236236P)\s?$)", "W-W-W-W-W-W-W-W-W-What Could This Be?"),
                 ]
             },
             CharacterId::AXL => {
