@@ -247,11 +247,11 @@ pub mod move_search {
             CharacterId::TESTAMENT => {
                 vec![
                     (r"(?i)((236HS?|((j.?\s*)?(light)?\s*hs?\s*reaper)))", "236H"),
-                    (r"(?i)((236\{HS?\}|((j.?\s*)?(med(ium)?)?\s*hs?\s*reaper)))", "236{H}"),
-                    (r"(?i)((236\[HS?\]|((j.?\s*)?(hard|charged?)?\s*hs?\s*reaper)))", "236[H]"),
+                    (r"(?i)((236\{HS?\}|((j.?\s*)?(med(ium)?)\s*hs?\s*reaper)))", "236{H}"),
+                    (r"(?i)((236\[HS?\]|((j.?\s*)?(hard|charged?)\s*hs?\s*reaper)))", "236[H]"),
                     (r"(?i)(?i)(?i)((236S|((j.?\s*)?(light)?\s*s\s*reaper)))", "236S"),
-                    (r"(?i)(?i)(?i)(?i)((236\{S\}|((j.?\s*)?(med(ium)?)?\s*s\s*reaper)))", "236{S}"),
-                    (r"(?i)((236\[S\]|((j.?\s*)?(hard|charged?)?\s*s\s*reaper)))", "236[S]"),
+                    (r"(?i)(?i)(?i)(?i)((236\{S\}|((j.?\s*)?(med(ium)?)\s*s\s*reaper)))", "236{S}"),
+                    (r"(?i)((236\[S\]|((j.?\s*)?(hard|charged?)\s*s\s*reaper)))", "236[S]"),
                     (r"(?i)((crow|unholy|diver))", "Unholy Diver"),
                     (r"(?i)((tele))", "Possession"),
                     (r"(?i)((214S|s\s*arbiter))", "214S"),
