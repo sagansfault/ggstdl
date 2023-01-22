@@ -67,7 +67,7 @@ pub mod move_import {
                     startup, 
                     active, 
                     recovery, 
-                    onblock, 
+                    _, 
                     invuln) = versioned_row_parser(row2).expect(format!("could not load moves for {}", name).as_str());
                 let version_name = String::from("SA Fire");
                 let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(Regex::new(format!(r"(?i)(^{}\s?$)", regex::escape(version_name.as_str())).as_str()).unwrap());
@@ -79,7 +79,7 @@ pub mod move_import {
                     startup,
                     active,
                     recovery,
-                    onblock,
+                    onblock: "see dl".to_string(), // special case, is hyperlink on dustloop
                     invuln,
                 });
                 return Some(moves);
