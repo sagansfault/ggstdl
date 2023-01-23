@@ -519,9 +519,9 @@ pub mod move_search {
                 vec![
                     (r"(?i)((tatami|mat|gaeshi|236K))", "236K"),
                     (r"(?i)((j.?\s*(tatami|mat|gaeshi|236K)))", "j.236K"),
-                    (r"(?i)((s\s*kabari|41236S))", "41236S"),
+                    (r"(?i)((tether|s\s*kabari|41236S))", "41236S"),
                     (r"(?i)((hs?\s*kabari|41236HS?))", "41236H"),
-                    (r"(?i)(((hs?\s*kabari|41236HS?)\s*(follow|~?HS?)))", "41236H~H"),
+                    (r"(?i)((^(hs?\s*kabari|41236HS?)\s?$\s*(follow|~?HS?)))", "41236H~H"),
                     (r"(?i)((yozansen|youzansen|tk|236S))", "Youzansen"),
                     (r"(?i)((parry|Hiiragi|236P))", "Hiiragi"),
                     (r"(?i)((236236S|watashi|tsurane|sanzu))", "Tsurane Sanzu-watashi"),
