@@ -580,7 +580,7 @@ pub mod move_search {
             },
             CharacterId::AXL => {
                 vec![
-                    (r"(?i)((rensen|rensin|\[4\]6S|flash))", "Sickle Flash"),
+                    (r"(?i)(^(rensen|rensin|\[4\]6S|flash)\s?$)", "Sickle Flash"),
                     (r"(?i)(((rensen|rensin|\[4\]6S|flash)\s*(8|up)))", "Soaring Chain Strike"),
                     (r"(?i)(((rensen|rensin|\[4\]6S|flash)\s*(2|down)))", "Spinning Chain Strike"),
                     (r"(?i)((cherry|((rensen|rensin|\[4\]6S|flash)\s*(s|bomb))))", "Winter Cherry"),
@@ -590,7 +590,7 @@ pub mod move_search {
                     (r"(?i)((j.?\s*(snail|214HS?)))", "j.214H"),
                     (r"(?i)((bomber|j.?\s*236HS?))", "Axl Bomber"),
                     (r"(?i)((reversal|storm|236236HS?))", "Sickle Storm"),
-                    (r"(?i)((one|vision|time\s*stop|632146P))", "632146P"),
+                    (r"(?i)(^(one|vision|time\s*stop|632146P)\s?$)", "632146P"),
                     (r"(?i)(((one|vision|time\s*stop|632146P)\s*activ))", "632146P Attack"),
                 ]
             },
