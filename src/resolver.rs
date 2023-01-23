@@ -499,6 +499,8 @@ pub mod move_search {
             },
             CharacterId::SIN => {
                 vec![
+                    (r"(?i)(^(beak|driver|236HS?)\s?$)", "Beak Driver"),
+                    (r"(?i)(((beak|driver|236HS?)\s*(~?H|follow)))", "Beak Driver Follow-up"),
                     (r"(?i)(^(hawk|baker|623S|dp)\s?$)", "Hawk Baker"),
                     (r"(?i)(((hawk|baker|623S|dp)\s*(~?S|follow)))", "Hawk Baker Follow-up"),
                     (r"(?i)(^(elk|hunt|236K)\s?$)", "236K"),
