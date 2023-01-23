@@ -598,8 +598,8 @@ pub mod move_search {
                 vec![
                     (r"(?i)((pb|grab|buster|360P|632146P))", "Potemkin Buster"),
                     (r"(?i)((heat|knuckle|hk|623HS?))", "Heat Knuckle"),
-                    (r"(?i)((fmf|mf|236P|fist|mega))", "236P"),
-                    (r"(?i)(((back|b)\s*(mega|fist|214P|mf)))", "214P"),
+                    (r"(?i)(^(fmf|mf|236P|fist|mega)/s?$)", "236P"),
+                    (r"(?i)((^(back|b)\s*(mega|fist|214P|mf)/s?$))", "214P"),
                     (r"(?i)(((k|kara)\s*(back|b)\s*(mega|fist|214P|mf)))", "2146K~P"),
                     (r"(?i)((slide|head|236S))", "Slide Head"),
                     (r"(?i)(^(hammer|fall|\[4\]6HS?|hf)\s?$)", "Hammer Fall"),
