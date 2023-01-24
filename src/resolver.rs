@@ -562,9 +562,9 @@ pub mod move_search {
             },
             CharacterId::FAUST => {
                 vec![
-                    (r"(?i)((scalpel|thrust|41236K))", "Thrust"),
+                    (r"(?i)(^(scalpel|thrust|41236K)\s?$)", "Thrust"),
                     (r"(?i)((pull|back))", "Pull Back"),
-                    (r"(?i)((golf|club|hole|41236K\s*HS?))", "Hole in One!"),
+                    (r"(?i)((hit|golf|club|hole|41236K\s*HS?))", "Hole in One!"),
                     (r"(?i)(^(item|toss|236P|what)\s?$)", "What Could This Be?"),
                     (r"(?i)((mmm|mix|236S))", "Mix Mix Mix"),
                     (r"(?i)((snip|command|grab|236HS?))", "Snip Snip Snip"),
