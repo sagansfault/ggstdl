@@ -533,7 +533,7 @@ pub mod move_search {
                 vec![
                     (r"(?i)((butter|shitsu|fire|236P))", "Shitsu"),
                     (r"(?i)((parry|suigetsu|spin|236K))", "Suigetsu No Hakobi"),
-                    (r"(?i)((fuujin|fujin|236HS?))", "Fuujin"),
+                    (r"(?i)(^(fuujin|fujin|236HS?)\s?$)", "Fuujin"),
                     (r"(?i)(((fuujin|fujin|236HS?)\s*P))", "Shin: Ichishiki"),
                     (r"(?i)(((fuujin|fujin|236HS?)\s*K))", "Issokutobi"),
                     (r"(?i)(((fuujin|fujin|236HS?)\s*S))", "Nagiha"),
