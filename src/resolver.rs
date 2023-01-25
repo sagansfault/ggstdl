@@ -427,10 +427,10 @@ pub mod move_search {
             },
             CharacterId::MAY => {
                 vec![
-                    (r"(?i)(^(\[4\]6S|s\s*dolphin)\s?$)", "[4]6S"),
+                    (r"(?i)(^(\[4\]6S|s?\s*dolphin)\s?$)", "[4]6S"),
                     (r"(?i)(^(\[4\]6HS?|hs?\s*dolphin)\s?$)", "[4]6H"),
-                    (r"(?i)((\[2\]8S|up\s*s\s*dolphin))", "[2]8S"),
-                    (r"(?i)((\[2\]8HS?|up\s*hs?\s*dolphin))", "[2]8H"),
+                    (r"(?i)((\[2\]8S|(up|vertical)\s*s?\s*dolphin))", "[2]8S"),
+                    (r"(?i)((\[2\]8HS?|(up|vertical)\s*hs?\s*dolphin))", "[2]8H"),
                     (r"(?i)((ok|overhead|kiss|623K|command|grab))", "Overhead Kiss"),
                     (r"(?i)((214P))", "214P"),
                     (r"(?i)((beach|ball|214K))", "214K"),
