@@ -141,10 +141,6 @@ fn select_parse<'a>(character: &Character, move_selector: &'a str, data_selector
         for resolver in MOVE_IMPORT_RESOLVERS {
             let res = resolver(character, name, data_ele);
             if let Some(mut moves_res) = res {
-                if character.id == CharacterId::ZATO {
-                    println!("tried: {}", name);
-                    println!("got {:?}",  moves_res.first());
-                }
                 moves.append(&mut moves_res);
                 break;
             }
