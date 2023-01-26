@@ -105,7 +105,7 @@ pub mod move_import {
 
      fn bridget_normal_resolver(character: &Character, name: &str, move_table: ElementRef) -> Option<Vec<Move>> {
         if character.id == CharacterId::BRIDGET {
-            if name.contains("f.SS") {
+            if name.contains("f.SS") || name.contains("S") { // special case, there is a 
                 return standard_resolver(character, "f.SS", move_table)
             } else if name.contains("5HH") {
                 return standard_resolver(character, "5HH", move_table)

@@ -1,7 +1,7 @@
 use std::{error::Error, hash::Hash};
 use regex::Regex;
 use resolver::move_import::MOVE_IMPORT_RESOLVERS;
-use scraper::Html;
+use scraper::{Html, html::Select, ElementRef};
 
 pub mod resolver;
 
@@ -39,7 +39,7 @@ impl CharacterId {
     ];
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Move {
     pub name: String,
     pub matcher: Regex,
@@ -129,14 +129,15 @@ fn select_parse<'a>(character: &Character, move_selector: &'a str, data_selector
     let data_selector = scraper::Selector::parse(data_selector)?;
 
     let move_iter = document.select(&move_selector);
+    let move_iter = clean_move_select(character, move_iter);
     let data_select = document.select(&data_selector);
+
     let zipped = move_iter.zip(data_select);
 
     let mut moves: Vec<Move> = vec![];
     for (move_ele, data_ele) in zipped {
         let name = move_ele.inner_html();
         let name = name.trim();
-        //println!("{}", name);
         for resolver in MOVE_IMPORT_RESOLVERS {
             let res = resolver(character, name, data_ele);
             if let Some(mut moves_res) = res {
@@ -146,6 +147,23 @@ fn select_parse<'a>(character: &Character, move_selector: &'a str, data_selector
         }
     }
     Ok(moves)
+}
+
+// a weird special function I need to make sure moves resolve properly
+fn clean_move_select<'a>(character: &'a Character, select: Select<'a, 'a>) -> impl Iterator<Item = ElementRef<'a>> {
+    // These are all special cases in which dustloop has labelled things weirdly
+    select.filter(|ele| {
+        let ele = ele.inner_html();
+        match character.id {
+            CharacterId::BRIDGET => {
+                !ele.eq_ignore_ascii_case("S") && !ele.eq_ignore_ascii_case("H")
+            }
+            CharacterId::LEO => {
+                !ele.eq_ignore_ascii_case("S") && !ele.eq_ignore_ascii_case("H") && !ele.eq_ignore_ascii_case("[S]") // the resolver expects [H] only
+            }
+            _ => true
+        }
+    })
 }
 
 #[tokio::test]
