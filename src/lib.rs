@@ -141,6 +141,10 @@ fn select_parse<'a>(character: &Character, move_selector: &'a str, data_selector
         for resolver in MOVE_IMPORT_RESOLVERS {
             let res = resolver(character, name, data_ele);
             if let Some(mut moves_res) = res {
+                if character.id == CharacterId::ZATO {
+                    println!("tried: {}", name);
+                    println!("got {:?}",  moves_res.first());
+                }
                 moves.append(&mut moves_res);
                 break;
             }
@@ -160,6 +164,9 @@ fn clean_move_select<'a>(character: &'a Character, select: Select<'a, 'a>) -> im
             }
             CharacterId::LEO => {
                 !ele.eq_ignore_ascii_case("S") && !ele.eq_ignore_ascii_case("H") && !ele.eq_ignore_ascii_case("[S]") // the resolver expects [H] only
+            }
+            CharacterId::ZATO => {
+                !ele.eq_ignore_ascii_case("Flight")
             }
             _ => true
         }
