@@ -57,7 +57,7 @@ impl Move {
         if verbose {
             format!("{}: d=({}) g=({}) s=({}) a=({}) r=({}) b=({}) i=({})", self.name, self.damage, self.guard, self.startup, self.active, self.recovery, self.onblock, self.invuln)
         } else {
-            format!("{}: d=({}) s=({}) a=({}) r=({}) b=({})", self.name, self.damage, self.startup, self.active, self.recovery, self.onblock)
+            format!("{}: damage=({}) startup=({}) active=({}) recovery=({}) onblock=({})", self.name, self.damage, self.startup, self.active, self.recovery, self.onblock)
         }
     }
 }
