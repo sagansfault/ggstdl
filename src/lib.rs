@@ -151,7 +151,6 @@ fn select_parse<'a>(character: &Character, move_selector: &'a str, data_selector
             let res = resolver(character, name, data_ele);
             if let Some(mut moves_res) = res {
                 moves.append(&mut moves_res);
-                println!("{}", name);
                 break;
             }
         }
