@@ -212,7 +212,7 @@ pub mod move_import {
     fn default_normal_resolver(original: impl Into<String>) -> Regex {
         let original = regex::escape(original.into().as_str());
         let original = original.replace(".", ".?");
-        let input = format!(r"(?i)(^{})", regex::escape(original.as_str()));
+        let input = format!(r"(?i)(^{})", original);
         Regex::new(&input).unwrap()
     }
 }
