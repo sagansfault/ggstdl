@@ -1,5 +1,5 @@
 pub mod move_import {
-    use lazy_static::lazy_static;
+    use lazy_static::{lazy_static, __Deref};
     use regex::Regex;
     use scraper::{ElementRef, Selector};
     use crate::{Character, Move, CharacterId};
@@ -49,7 +49,7 @@ pub mod move_import {
                     recovery, 
                     onblock, 
                     invuln) = versioned_row_parser(row1).expect(format!("could not load moves for {}", name).as_str());
-                let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(Regex::new(format!(r"(?i)(^{}\s?$)", regex::escape(version_name.as_str())).as_str()).unwrap());
+                let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(default_normal_resolver(&version_name));
                 moves.push(Move {
                     name: version_name,
                     matcher: regex,
@@ -70,7 +70,7 @@ pub mod move_import {
                     _, 
                     invuln) = versioned_row_parser(row2).expect(format!("could not load moves for {}", name).as_str());
                 let version_name = String::from("SA Fire");
-                let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(Regex::new(format!(r"(?i)(^{}\s?$)", regex::escape(version_name.as_str())).as_str()).unwrap());
+                let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(default_normal_resolver(&version_name));
                 moves.push(Move {
                     name: version_name,
                     matcher: regex,
@@ -126,7 +126,7 @@ pub mod move_import {
                         recovery, 
                         onblock, 
                         invuln) = standard_row_parser(data_row).expect(format!("could not load moves for {}", name).as_str());
-                    let regex = get_binding_regex(character.id, name.to_string()).unwrap_or(Regex::new(format!(r"(?i)(^{}\s?$)", regex::escape(name)).as_str()).unwrap());
+                    let regex = get_binding_regex(character.id, name.to_string()).unwrap_or(default_normal_resolver(name));
                     return Some(vec![Move { name: String::from(name), matcher: regex, guard, damage, startup, active, recovery, onblock, invuln }])
                 }
             }
@@ -154,7 +154,7 @@ pub mod move_import {
                     recovery, 
                     onblock, 
                     invuln) = standard_row_parser(data_row).expect(format!("could not load moves for {}", name).as_str());
-                let regex = get_binding_regex(character.id, name.to_string()).unwrap_or(Regex::new(format!(r"(?i)(^{}\s?$)", regex::escape(name)).as_str()).unwrap());
+                let regex = get_binding_regex(character.id, name.to_string()).unwrap_or(default_normal_resolver(name));
                 return Some(vec![Move { name: String::from(name), matcher: regex, guard, damage, startup, active, recovery, onblock, invuln }]);
             }
         }
@@ -176,7 +176,7 @@ pub mod move_import {
                     recovery, 
                     onblock, 
                     invuln) = versioned_row_parser(data_row).expect(format!("could not load moves for {}", name).as_str());
-                let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(Regex::new(format!(r"(?i)(^{}\s?$)", regex::escape(version_name.as_str())).as_str()).unwrap());
+                let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(default_normal_resolver(&version_name));
                 moves.push(Move { name: version_name, matcher: regex, guard, damage, startup, active, recovery, onblock, invuln });
             }
             return Some(moves);
@@ -207,6 +207,13 @@ pub mod move_import {
         let onblock = vals.next().map(|v| v.inner_html())?.trim().to_string();
         let invuln = vals.next().map(|v| v.inner_html())?.trim().to_string();
         Some((version_name, damage, guard, startup, active, recovery, onblock, invuln))
+    }
+
+    fn default_normal_resolver(original: impl Into<String>) -> Regex {
+        let original = regex::escape(original.into().as_str());
+        let original = original.replace(".", ".?");
+        let input = format!(r"(?i)(^{})", regex::escape(original.as_str()));
+        Regex::new(&input).unwrap()
     }
 }
 
