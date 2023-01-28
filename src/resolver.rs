@@ -262,6 +262,8 @@ pub mod move_search {
             },
             CharacterId::JACKO => {
                 vec![
+                    (r"(?i)(2D)", "Sweep"),
+
                     (r"(?i)((236K(&|\*)))", "Launched Servant"),
                     (r"(?i)((236K|shoot|kick))", "236K"),
                     (r"(?i)((236P|summon|pull))", "236P"),
