@@ -269,7 +269,7 @@ pub mod move_search {
                     (r"(?i)((pick|2P))", "2P"),
                     (r"(?i)((throw|6(P|K|S|HS?|D)))", "Throw Servant"),
                     (r"(?i)((drop|release))", "Release Servant"),
-                    (r"(?i)((unsummon|recover|214P))", "Recover Servant"),
+                    (r"(?i)((unsummon|recover|recall|214P))", "Recover Servant"),
                     (r"(?i)((attack|214K))", "Attack Command"),
                     (r"(?i)((defend|block|214S))", "Defend Command"),
                     (r"(?i)((countdown|bomb|214HS?))", "Countdown"),

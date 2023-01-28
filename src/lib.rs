@@ -100,7 +100,7 @@ pub async fn load() -> Result<Vec<Character>, Box<dyn Error>> {
     Ok(characters)
 }
 
-const NORMAL_MOVE_SELECTOR: &str = "#section-collapsible-2 > h3 > span.mw-headline > big > span";
+const NORMAL_MOVE_SELECTOR: &str = "#section-collapsible-2 > h3 > span.mw-headline > big";
 const NORMAL_DATA_SELECTOR: &str = "#section-collapsible-2 > div.attack-container > div.attack-info > table.moveTable > tbody";
 fn append_normals(character: &mut Character, document: &Html) -> Result<(), Box<dyn Error>> {
     let mut moves = select_parse(character, NORMAL_MOVE_SELECTOR, NORMAL_DATA_SELECTOR, document)?;
@@ -125,6 +125,12 @@ fn append_overdrives(character: &mut Character, document: &Html) -> Result<(), B
 }
 
 fn select_parse<'a>(character: &Character, move_selector: &'a str, data_selector: &'a str, document: &Html) -> Result<Vec<Move>, Box<dyn Error + 'a>> {
+
+    // ensure it's only compiled once
+    lazy_static::lazy_static! {
+        static ref NAME_TRIMMER: Regex = Regex::new(r"(?i)(<[^><]*>)").unwrap();
+    }
+
     let move_selector = scraper::Selector::parse(move_selector)?;
     let data_selector = scraper::Selector::parse(data_selector)?;
 
@@ -136,12 +142,16 @@ fn select_parse<'a>(character: &Character, move_selector: &'a str, data_selector
 
     let mut moves: Vec<Move> = vec![];
     for (move_ele, data_ele) in zipped {
+
         let name = move_ele.inner_html();
+        let name = NAME_TRIMMER.replace_all(name.as_str(), "");
         let name = name.trim();
+
         for resolver in MOVE_IMPORT_RESOLVERS {
             let res = resolver(character, name, data_ele);
             if let Some(mut moves_res) = res {
                 moves.append(&mut moves_res);
+                println!("{}", name);
                 break;
             }
         }
