@@ -516,7 +516,7 @@ pub mod move_search {
                     (r"(?i)(((elk|hunt|236K)\s*(~?K|follow)))", "236K~K"),
                     (r"(?i)(^(hoof|stomp|214S)\s?$)", "214S"),
                     (r"(?i)(((hoof|stomp|214S)\s*(~?S|follow)))", "214S~S"),
-                    (r"(?i)((gazelle|dash))", "Gazelle Step"),
+                    (r"(?i)((gazelle|dash|step))", "Gazelle Step"),
                     (r"(?i)((food|eat|grow|63214P))", "Still Growing"),
                     (r"(?i)(^(rtl|ride|lightning|632146HS?)\s?$)", "632146H"),
                     (r"(?i)(((rtl|ride|lightning|632146HS?)\s*(~?HS?|follow)))", "632146HH"),
@@ -548,8 +548,8 @@ pub mod move_search {
                     (r"(?i)(((fuujin|fujin|236HS?)\s*S))", "Nagiha"),
                     (r"(?i)(((fuujin|fujin|236HS?)\s*HS?))", "Rin"),
                     (r"(?i)((kou|236S))", "Kou"),
-                    (r"(?i)((issei|ougi|632146S?))", "Issei Ougi: Sai"),
-                    (r"(?i)((kach|632146S))", "Kachoufuugetsu Kai"),
+                    (r"(?i)((issei|ougi|632146HS?))", "Issei Ougi: Sai"),
+                    (r"(?i)(kach|632146S)", "Kachoufuugetsu Kai"),
                 ]
             },
             CharacterId::LEO => {
