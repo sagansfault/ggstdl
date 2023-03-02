@@ -42,7 +42,7 @@ impl CharacterId {
 #[derive(Debug, Clone)]
 pub struct Move {
     pub name: String,
-    pub matcher: Regex,
+    pub regex: Regex,
     pub guard: String,
     pub damage: String,
     pub startup: String,

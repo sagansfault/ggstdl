@@ -52,7 +52,7 @@ pub mod move_import {
                 let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(default_normal_resolver(&version_name));
                 moves.push(Move {
                     name: version_name,
-                    matcher: regex,
+                    regex,
                     guard,
                     damage,
                     startup,
@@ -73,7 +73,7 @@ pub mod move_import {
                 let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(default_normal_resolver(&version_name));
                 moves.push(Move {
                     name: version_name,
-                    matcher: regex,
+                    regex,
                     guard,
                     damage,
                     startup,
@@ -127,7 +127,7 @@ pub mod move_import {
                         onblock, 
                         invuln) = standard_row_parser(data_row).expect(format!("could not load moves for {}", name).as_str());
                     let regex = get_binding_regex(character.id, name.to_string()).unwrap_or(default_normal_resolver(name));
-                    return Some(vec![Move { name: String::from(name), matcher: regex, guard, damage, startup, active, recovery, onblock, invuln }])
+                    return Some(vec![Move { name: String::from(name), regex, guard, damage, startup, active, recovery, onblock, invuln }])
                 }
             }
         }
@@ -155,7 +155,7 @@ pub mod move_import {
                     onblock, 
                     invuln) = standard_row_parser(data_row).expect(format!("could not load moves for {}", name).as_str());
                 let regex = get_binding_regex(character.id, name.to_string()).unwrap_or(default_normal_resolver(name));
-                return Some(vec![Move { name: String::from(name), matcher: regex, guard, damage, startup, active, recovery, onblock, invuln }]);
+                return Some(vec![Move { name: String::from(name), regex, guard, damage, startup, active, recovery, onblock, invuln }]);
             }
         }
         None
@@ -177,7 +177,7 @@ pub mod move_import {
                     onblock, 
                     invuln) = versioned_row_parser(data_row).expect(format!("could not load moves for {}", name).as_str());
                 let regex = get_binding_regex(character.id, version_name.clone()).unwrap_or(default_normal_resolver(&version_name));
-                moves.push(Move { name: version_name, matcher: regex, guard, damage, startup, active, recovery, onblock, invuln });
+                moves.push(Move { name: version_name, regex, guard, damage, startup, active, recovery, onblock, invuln });
             }
             return Some(moves);
         }
