@@ -1,12 +1,10 @@
 # ggstdl
-A webscraper/api for Guilty Gear Strive Dustloop
+A webscraper/api for Guilty Gear Strive Dustloop  
+
+There are lots of possible accepted character and move names in the regexes of `Character` and `Move`. This is all done for you using the method below. Inputs will work as well for move queries.
 
 ```rust
-let char_query = "jack";
-let move_query = "shoot";
+let data: GGSTDLData = ggstdl::load().await; // only async part of ggstdl
 
-let data: Vec<Character> = ggstdl::load().await;
-
-let character: Character = characters.iter().find(|c| c.regex.is_match(char_query.as_str()))?;
-let move_found: Move = character.moves.iter().find(|m| m.regex.is_match(move_query.as_str()))?;
+let move_found: &Move = data.find_move("jack", "shoot")?; // Jack-O's 236K (minion shoot)
 ```
