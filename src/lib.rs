@@ -1,9 +1,43 @@
-use std::{error::Error, hash::Hash};
+use std::{error::Error, hash::Hash, fmt::Display};
 use regex::Regex;
 use resolver::move_import::MOVE_IMPORT_RESOLVERS;
 use scraper::{Html, html::Select, ElementRef};
 
 pub mod resolver;
+
+#[derive(Debug)]
+pub enum GGSTDLError {
+    UnknownCharacter, UnknownMove
+}
+
+impl Display for GGSTDLError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            GGSTDLError::UnknownCharacter => write!(f, "Unknown character"),
+            GGSTDLError::UnknownMove => write!(f, "Unknown move"),
+        }
+    }
+}
+
+impl Error for GGSTDLError {}
+
+#[derive(Debug)]
+pub struct GGSTDLData {
+    characters: Vec<Character>
+}
+
+impl GGSTDLData {
+    pub fn find_character(&self, char_query: &str) -> Result<&Character, GGSTDLError> {
+        self.characters.iter().find(|c| c.regex.is_match(char_query))
+            .ok_or(GGSTDLError::UnknownCharacter)
+    }
+
+    pub fn find_move(&self, char_query: &str, move_query: &str) -> Result<&Move, GGSTDLError> {
+        let character = self.find_character(char_query)?;
+        character.moves.iter().find(|m| m.regex.is_match(move_query))
+            .ok_or(GGSTDLError::UnknownMove)
+    }
+}
 
 #[derive(Debug)]
 pub struct Character {
@@ -62,7 +96,7 @@ impl Move {
     }
 }
 
-pub async fn load() -> Result<Vec<Character>, Box<dyn Error>> {
+pub async fn load() -> Result<GGSTDLData, Box<dyn Error>> {
     let mut characters: Vec<Character> = vec![
         Character::new(CharacterId::TESTAMENT, r"(?i)(test)", "https://www.dustloop.com/w/GGST/Testament"),
         Character::new(CharacterId::JACKO, r"(?i)(jack)", "https://www.dustloop.com/w/GGST/Jack-O"),
@@ -97,7 +131,7 @@ pub async fn load() -> Result<Vec<Character>, Box<dyn Error>> {
         println!("Loaded moves for {:?} : {}", character.id, character.moves.len());
     }
 
-    Ok(characters)
+    Ok(GGSTDLData { characters })
 }
 
 const NORMAL_MOVE_SELECTOR: &str = "#section-collapsible-2 > h3 > span.mw-headline > big";
