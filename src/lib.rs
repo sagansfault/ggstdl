@@ -1,6 +1,7 @@
 use std::{error::Error, fmt::Display};
 
 use regex::Regex;
+use tokio::task::JoinSet;
 
 mod resolver;
 
@@ -62,13 +63,15 @@ pub struct Character {
 }
 
 impl Character {
-    pub fn new(id: CharacterId, regex: &str, frame_data_url: &str) -> Character {
-        Character {
+    async fn create(id: CharacterId, regex: &str, frame_data_url: &str) -> Character {
+        let mut character = Character {
             id, 
             regex: Regex::new(regex).unwrap(), 
             frame_data_url: String::from(frame_data_url),
-             moves: vec![] 
-        }
+            moves: vec![] 
+        };
+        character.moves = resolver::get_moves(&character).await;
+        character
     }
 }
 
@@ -96,36 +99,50 @@ pub struct Move {
 
 pub async fn load() -> Result<GGSTDLData, Box<dyn Error>> {
 
-    let mut characters: Vec<Character> = vec![
-        Character::new(CharacterId::TESTAMENT, r"(?i)(test)", "https://www.dustloop.com/wiki/index.php?title=GGST/Testament/Frame_Data"),
-        Character::new(CharacterId::JACKO, r"(?i)(jack)", "https://www.dustloop.com/wiki/index.php?title=GGST/Jack-O/Frame_Data"),
-        Character::new(CharacterId::NAGORIYUKI, r"(?i)(nago)", "https://www.dustloop.com/wiki/index.php?title=GGST/Nagoriyuki/Frame_Data"),
-        Character::new(CharacterId::MILLIA, r"(?i)(millia|milia)", "https://www.dustloop.com/wiki/index.php?title=GGST/Millia_Rage/Frame_Data"),
-        Character::new(CharacterId::CHIPP, r"(?i)(chip)", "https://www.dustloop.com/wiki/index.php?title=GGST/Chipp_Zanuff/Frame_Data"),
-        Character::new(CharacterId::SOL, r"(?i)(sol)", "https://www.dustloop.com/wiki/index.php?title=GGST/Sol_Badguy/Frame_Data"),
-        Character::new(CharacterId::KY, r"(?i)(ky)", "https://www.dustloop.com/wiki/index.php?title=GGST/Ky_Kiske/Frame_Data"),
-        Character::new(CharacterId::MAY, r"(?i)(may)", "https://www.dustloop.com/wiki/index.php?title=GGST/May/Frame_Data"),
-        Character::new(CharacterId::ZATO, r"(?i)(zato)", "https://www.dustloop.com/wiki/index.php?title=GGST/Zato-1/Frame_Data"),
-        Character::new(CharacterId::INO, r"(?i)(ino|i-no)", "https://www.dustloop.com/wiki/index.php?title=GGST/I-No/Frame_Data"),
-        Character::new(CharacterId::HAPPYCHAOS, r"(?i)(hc|chaos|happy)", "https://www.dustloop.com/wiki/index.php?title=GGST/Happy_Chaos/Frame_Data"),
-        Character::new(CharacterId::SIN, r"(?i)(sin)", "https://www.dustloop.com/wiki/index.php?title=GGST/Sin_Kiske/Frame_Data"),
-        Character::new(CharacterId::BAIKEN, r"(?i)(baiken)", "https://www.dustloop.com/wiki/index.php?title=GGST/Baiken/Frame_Data"),
-        Character::new(CharacterId::ANJI, r"(?i)(anji)", "https://www.dustloop.com/wiki/index.php?title=GGST/Anji_Mito/Frame_Data"),
-        Character::new(CharacterId::LEO, r"(?i)(leo)", "https://www.dustloop.com/wiki/index.php?title=GGST/Leo_Whitefang/Frame_Data"),
-        Character::new(CharacterId::FAUST, r"(?i)(faust)", "https://www.dustloop.com/wiki/index.php?title=GGST/Faust/Frame_Data"),
-        Character::new(CharacterId::AXL, r"(?i)(axl)", "https://www.dustloop.com/wiki/index.php?title=GGST/Axl_Low/Frame_Data"),
-        Character::new(CharacterId::POTEMKIN, r"(?i)(pot)", "https://www.dustloop.com/wiki/index.php?title=GGST/Potemkin/Frame_Data"),
-        Character::new(CharacterId::RAMLETHAL, r"(?i)(ram)", "https://www.dustloop.com/wiki/index.php?title=GGST/Ramlethal_Valentine/Frame_Data"),
-        Character::new(CharacterId::GIO, r"(?i)(gio)", "https://www.dustloop.com/wiki/index.php?title=GGST/Giovanna/Frame_Data"),
-        Character::new(CharacterId::GOLDLEWIS, r"(?i)(lewis|gold|goldlewis|gl|dick)", "https://www.dustloop.com/wiki/index.php?title=GGST/Goldlewis_Dickinson/Frame_Data"),
-        Character::new(CharacterId::BRIDGET, r"(?i)(bridget)", "https://www.dustloop.com/wiki/index.php?title=GGST/Bridget/Frame_Data"),
+    let characters = vec![
+        Character::create(CharacterId::TESTAMENT, r"(?i)(test)", "https://www.dustloop.com/wiki/index.php?title=GGST/Testament/Frame_Data"),
+        Character::create(CharacterId::JACKO, r"(?i)(jack)", "https://www.dustloop.com/wiki/index.php?title=GGST/Jack-O/Frame_Data"),
+        Character::create(CharacterId::NAGORIYUKI, r"(?i)(nago)", "https://www.dustloop.com/wiki/index.php?title=GGST/Nagoriyuki/Frame_Data"),
+        Character::create(CharacterId::MILLIA, r"(?i)(millia|milia)", "https://www.dustloop.com/wiki/index.php?title=GGST/Millia_Rage/Frame_Data"),
+        Character::create(CharacterId::CHIPP, r"(?i)(chip)", "https://www.dustloop.com/wiki/index.php?title=GGST/Chipp_Zanuff/Frame_Data"),
+        Character::create(CharacterId::SOL, r"(?i)(sol)", "https://www.dustloop.com/wiki/index.php?title=GGST/Sol_Badguy/Frame_Data"),
+        Character::create(CharacterId::KY, r"(?i)(ky)", "https://www.dustloop.com/wiki/index.php?title=GGST/Ky_Kiske/Frame_Data"),
+        Character::create(CharacterId::MAY, r"(?i)(may)", "https://www.dustloop.com/wiki/index.php?title=GGST/May/Frame_Data"),
+        Character::create(CharacterId::ZATO, r"(?i)(zato)", "https://www.dustloop.com/wiki/index.php?title=GGST/Zato-1/Frame_Data"),
+        Character::create(CharacterId::INO, r"(?i)(ino|i-no)", "https://www.dustloop.com/wiki/index.php?title=GGST/I-No/Frame_Data"),
+        Character::create(CharacterId::HAPPYCHAOS, r"(?i)(hc|chaos|happy)", "https://www.dustloop.com/wiki/index.php?title=GGST/Happy_Chaos/Frame_Data"),
+        Character::create(CharacterId::SIN, r"(?i)(sin)", "https://www.dustloop.com/wiki/index.php?title=GGST/Sin_Kiske/Frame_Data"),
+        Character::create(CharacterId::BAIKEN, r"(?i)(baiken)", "https://www.dustloop.com/wiki/index.php?title=GGST/Baiken/Frame_Data"),
+        Character::create(CharacterId::ANJI, r"(?i)(anji)", "https://www.dustloop.com/wiki/index.php?title=GGST/Anji_Mito/Frame_Data"),
+        Character::create(CharacterId::LEO, r"(?i)(leo)", "https://www.dustloop.com/wiki/index.php?title=GGST/Leo_Whitefang/Frame_Data"),
+        Character::create(CharacterId::FAUST, r"(?i)(faust)", "https://www.dustloop.com/wiki/index.php?title=GGST/Faust/Frame_Data"),
+        Character::create(CharacterId::AXL, r"(?i)(axl)", "https://www.dustloop.com/wiki/index.php?title=GGST/Axl_Low/Frame_Data"),
+        Character::create(CharacterId::POTEMKIN, r"(?i)(pot)", "https://www.dustloop.com/wiki/index.php?title=GGST/Potemkin/Frame_Data"),
+        Character::create(CharacterId::RAMLETHAL, r"(?i)(ram)", "https://www.dustloop.com/wiki/index.php?title=GGST/Ramlethal_Valentine/Frame_Data"),
+        Character::create(CharacterId::GIO, r"(?i)(gio)", "https://www.dustloop.com/wiki/index.php?title=GGST/Giovanna/Frame_Data"),
+        Character::create(CharacterId::GOLDLEWIS, r"(?i)(lewis|gold|goldlewis|gl|dick)", "https://www.dustloop.com/wiki/index.php?title=GGST/Goldlewis_Dickinson/Frame_Data"),
+        Character::create(CharacterId::BRIDGET, r"(?i)(bridget)", "https://www.dustloop.com/wiki/index.php?title=GGST/Bridget/Frame_Data"),
     ];
 
-    for character in characters.iter_mut() {
-        resolver::import_moves(character).await?;
-        println!("Loaded moves for {:?} : {}", character.id, character.moves.len());
+    let mut set = JoinSet::new();
+    for ele in characters {
+        set.spawn(ele);
+    }
+
+    let mut characters = vec![];
+    while let Some(res) = set.join_next().await {
+        let Ok(character) = res else {
+            println!("Error handling character creation future: {}", res.unwrap_err());
+            continue;
+        };
+        println!("Loaded {} moves for {:?}", character.moves.len(), character.id);
+        characters.push(character);
     }
 
     Ok(GGSTDLData { characters })
+}
 
+#[tokio::test]
+async fn test() {
+    let _ = load().await;
 }

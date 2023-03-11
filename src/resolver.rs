@@ -1,49 +1,61 @@
-use std::{error::Error, collections::HashMap};
+use std::collections::HashMap;
 
 use regex::Regex;
 use scraper::{Selector, ElementRef, element_ref::Select};
 
-use crate::{Character, Move, CharacterId};
+use crate::{Move, CharacterId, Character};
 
-const SECTIONS: [&str; 3] = ["#DataTables_Table_0", "#DataTables_Table_1", "#DataTables_Table_2"];
-pub async fn import_moves(character: &mut Character) -> Result<(), Box<dyn Error>> {
-    let res = reqwest::get(character.frame_data_url.as_str()).await?.text().await?;
+const SECTIONS: [&str; 3] = ["#section-collapsible-3 > table", "#section-collapsible-4 > table", "#section-collapsible-5 > table"];
+pub async fn get_moves(character: &Character) -> Vec<Move> {
+    let mut moves: Vec<Move> = vec![];
+
+    let res = reqwest::get(character.frame_data_url.as_str()).await;
+    let Ok(res) = res else {
+        println!("Error making request for {:?}", character.id);
+        return moves;
+    };
+    let Ok(res) = res.text().await else {
+        println!("Error making request for {:?}", character.id);
+        return moves;
+    };
+
     let document = scraper::Html::parse_document(&res);
     for ele in SECTIONS {
         let parse = Selector::parse(ele);
         let Ok(section_selector) = parse else {
             println!("Error making selector for {:?}: {}", character.id, parse.unwrap_err());
-                continue;
+            continue;
         };
         let select = document.select(&section_selector).next();
         let Some(element) = select else {
             println!("Could not select section {} for {:?}", ele, character.id);
             continue;
         };
-        load_section(character, element);
+        let mut moves_found = load_section(character.id, element);
+        moves.append(&mut moves_found);
     }
-    Ok(())
+    moves
 }
 
-const ROW: &str = "tbody > tr";
-const ELEMENT: &str = "td";
+// ensure these are only initialized once
 lazy_static::lazy_static! {
-    static ref ROW_SELECTOR: Selector = Selector::parse(ROW).unwrap();
-    static ref ELEMENT_SELECTOR: Selector = Selector::parse(ELEMENT).unwrap();
+    static ref ROW_SELECTOR: Selector = Selector::parse("tbody > tr").unwrap();
+    static ref ELEMENT_SELECTOR: Selector = Selector::parse("td").unwrap();
 }
 
-fn load_section(character: &mut Character, element: ElementRef) {
+fn load_section(character: CharacterId, element: ElementRef) -> Vec<Move> {
     let select = element.select(&ROW_SELECTOR);
+    let mut moves: Vec<Move> = vec![];
     for row_raw in select {
         let row_elements = row_raw.select(&ELEMENT_SELECTOR);
-        let move_found = parse_row(row_elements, &character.id);
-        character.moves.push(move_found);
+        let move_found = parse_row(row_elements, &character);
+        moves.push(move_found);
     }
+    moves
 }
 
 fn parse_row(row: Select, character_id: &CharacterId) -> Move {
-    // skip first one becase ii's the details control
-    let mut row = row.skip(1).map(|v| v.inner_html());
+    let mut row = row.map(|v| v.inner_html());
     let input = row.next().unwrap_or(String::from("")).trim().to_string();
     let name = row.next().unwrap_or(String::from("")).trim().to_string();
     let damage = row.next().unwrap_or(String::from("")).trim().to_string();
@@ -568,7 +580,6 @@ fn get_bindings(character_id: CharacterId) -> Vec<(String, String)> {
                 (r"(?i)((loop|632146S))", "Loop the Loop"),
                 (r"(?i)((motor|killing|632146HS?|return))", "Return of the Killing Machine"),
             ]
-        },
-        _ => vec![]
+        }
     }.into_iter().map(|(k, v)| (String::from(k), String::from(v))).collect::<Vec<(String, String)>>()
 }
