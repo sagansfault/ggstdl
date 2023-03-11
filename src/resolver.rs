@@ -5,6 +5,14 @@ use scraper::{Selector, ElementRef, element_ref::Select};
 
 use crate::{Move, CharacterId, Character};
 
+// ensure these are only initialized once
+lazy_static::lazy_static! {
+    static ref IMAGE_URL_MATCHER: Regex = Regex::new(r"(?i)src=&quot;(\S+hitbox\.png)").unwrap();
+
+    static ref ROW_SELECTOR: Selector = Selector::parse("tbody > tr").unwrap();
+    static ref ELEMENT_SELECTOR: Selector = Selector::parse("td").unwrap();
+}
+
 const SECTIONS: [&str; 3] = ["#section-collapsible-3 > table", "#section-collapsible-4 > table", "#section-collapsible-5 > table"];
 pub async fn get_moves(character: &Character) -> Vec<Move> {
     let mut moves: Vec<Move> = vec![];
@@ -27,28 +35,35 @@ pub async fn get_moves(character: &Character) -> Vec<Move> {
             continue;
         };
         let select = document.select(&section_selector).next();
-        let Some(element) = select else {
+        let Some(section_element) = select else {
             println!("Could not select section {} for {:?}", ele, character.id);
             continue;
         };
-        let mut moves_found = load_section(character.id, element, ind != 0);
+        let mut moves_found = load_section(character.id, section_element, ind != 0);
         moves.append(&mut moves_found);
     }
     moves
 }
 
-// ensure these are only initialized once
-lazy_static::lazy_static! {
-    static ref ROW_SELECTOR: Selector = Selector::parse("tbody > tr").unwrap();
-    static ref ELEMENT_SELECTOR: Selector = Selector::parse("td").unwrap();
-}
-
-fn load_section(character: CharacterId, element: ElementRef, named: bool) -> Vec<Move> {
-    let select = element.select(&ROW_SELECTOR);
+fn load_section(character: CharacterId, section: ElementRef, named: bool) -> Vec<Move> {
+    let select = section.select(&ROW_SELECTOR);
     let mut moves: Vec<Move> = vec![];
     for row_raw in select {
+
+        // the hitbox image urls are in the html element itself (hidden details control)
+        let element_html = row_raw.html();
+        let mut image = String::from("https://www.dustloop.com/wiki/images/5/55/GGST_Logo.png");
+        // we only want the first match
+        if let Some(first) = IMAGE_URL_MATCHER.captures_iter(&element_html).next() {
+            // the first (0th) capture is always the entire match, I just want the first group as designed in the regex
+            if let Some(url) = first.get(1) {
+                image = format!("https://www.dustloop.com{}", url.as_str());
+            }
+        };
+
         let row_elements = row_raw.select(&ELEMENT_SELECTOR);
-        let move_found = parse_row(row_elements, &character, named);
+        let mut move_found = parse_row(row_elements, &character, named);
+        move_found.hitboxes = image;
         moves.push(move_found);
     }
     moves
@@ -96,8 +111,7 @@ fn parse_row(row: Select, character_id: &CharacterId, named: bool) -> Move {
         proration,
         risc_gain,
         risc_loss,
-        image: String::from("coming soon!"),
-        hitboxes: String::from("coming soon!"),
+        hitboxes: String::from("https://www.dustloop.com/wiki/images/5/55/GGST_Logo.png"),
     }
 }
 

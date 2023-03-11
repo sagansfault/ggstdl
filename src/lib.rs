@@ -93,7 +93,6 @@ pub struct Move {
     pub proration: String,
     pub risc_gain: String,
     pub risc_loss: String,
-    pub image: String,
     pub hitboxes: String
 }
 
@@ -129,15 +128,15 @@ pub async fn load() -> Result<GGSTDLData, Box<dyn Error>> {
         set.spawn(ele);
     }
 
-    let mut characters = vec![];
+    let mut characters: Vec<Character> = vec![];
     while let Some(res) = set.join_next().await {
         let Ok(character) = res else {
             println!("Error handling character creation future: {}", res.unwrap_err());
             continue;
         };
-        println!("Loaded {} moves for {:?}", character.moves.len(), character.id);
         characters.push(character);
     }
+    println!("Loaded {} moves for {:?} characters", characters.iter().map(|c| c.moves.len()).sum::<usize>(), characters.len());
 
     Ok(GGSTDLData { characters })
 }
