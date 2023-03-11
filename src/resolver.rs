@@ -79,6 +79,7 @@ fn parse_row(row: Select, character_id: &CharacterId, named: bool) -> Move {
     let risc_loss = row.next().unwrap_or(String::from("")).trim().to_string();
     let regex = get_regex_binding(character_id, input.clone(), name.clone())
         .unwrap_or(default_normal_resolver(input.clone()));
+    println!("binding {} to {:?}", name, regex);
     Move {
         regex,
         input,
@@ -103,8 +104,8 @@ fn parse_row(row: Select, character_id: &CharacterId, named: bool) -> Move {
 
 fn default_normal_resolver(original: impl Into<String>) -> Regex {
     let original = regex::escape(original.into().as_str());
-    let original = original.replace(".", r"\.?");
-    let input = format!(r"(?i)(^{})$", original);
+    let original = original.replace(".", ".?"); // the dot is already there, so it is escaped in previous line
+    let input = format!(r"(?i)^({})$", original);
     Regex::new(&input).unwrap()
 }
 
