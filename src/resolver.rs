@@ -57,6 +57,7 @@ fn load_section(character: CharacterId, element: ElementRef, named: bool) -> Vec
 // an unfortunate special boolean I have to include because the rows are not the same for Normals, Specials etc
 fn parse_row(row: Select, character_id: &CharacterId, named: bool) -> Move {
     let mut row = row.map(|v| v.inner_html());
+    let _ = row.next(); // skip one, first is details control on table
     let input = row.next().unwrap_or(String::from("")).trim().to_string();
     let name = if named {
         row.next().unwrap_or(String::from("")).trim().to_string()
@@ -108,9 +109,10 @@ lazy_static::lazy_static! {
 fn get_regex_binding(character_id: &CharacterId, input: String, name: String) -> Option<Regex> {
     REGEX_MOVE_BINDINGS.get(character_id).map(|v| {
         for ele in v {
-            let bind = &ele.1;
-            if bind.eq_ignore_ascii_case(input.as_str()) || bind.eq_ignore_ascii_case(name.as_str()) {
-                return Some(ele.0.clone());
+            let regex = &ele.0;
+            let _bind = &ele.1; // remove unused?
+            if regex.is_match(input.as_str()) || regex.is_match(name.as_str()) {
+                return Some(regex.clone());
             }
         }
         return None;
