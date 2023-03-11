@@ -117,8 +117,8 @@ fn get_regex_binding(character_id: &CharacterId, input: String, name: String) ->
     REGEX_MOVE_BINDINGS.get(character_id).map(|v| {
         for ele in v {
             let regex = &ele.0;
-            let _bind = &ele.1; // remove unused?
-            if regex.is_match(input.as_str()) || regex.is_match(name.as_str()) {
+            let bind = &ele.1;
+            if bind.eq_ignore_ascii_case(input.as_str()) || bind.eq_ignore_ascii_case(name.as_str()) {
                 return Some(regex.clone());
             }
         }
