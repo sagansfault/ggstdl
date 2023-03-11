@@ -79,7 +79,6 @@ fn parse_row(row: Select, character_id: &CharacterId, named: bool) -> Move {
     let risc_loss = row.next().unwrap_or(String::from("")).trim().to_string();
     let regex = get_regex_binding(character_id, input.clone(), name.clone())
         .unwrap_or(default_normal_resolver(input.clone()));
-    println!("binding {} to {:?}", name, regex);
     Move {
         regex,
         input,
