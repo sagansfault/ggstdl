@@ -20,7 +20,7 @@ pub async fn get_moves(character: &Character) -> Vec<Move> {
     };
 
     let document = scraper::Html::parse_document(&res);
-    for ele in SECTIONS {
+    for (ind, ele) in SECTIONS.iter().enumerate() {
         let parse = Selector::parse(ele);
         let Ok(section_selector) = parse else {
             println!("Error making selector for {:?}: {}", character.id, parse.unwrap_err());
@@ -31,7 +31,7 @@ pub async fn get_moves(character: &Character) -> Vec<Move> {
             println!("Could not select section {} for {:?}", ele, character.id);
             continue;
         };
-        let mut moves_found = load_section(character.id, element);
+        let mut moves_found = load_section(character.id, element, ind != 0);
         moves.append(&mut moves_found);
     }
     moves
@@ -43,21 +43,26 @@ lazy_static::lazy_static! {
     static ref ELEMENT_SELECTOR: Selector = Selector::parse("td").unwrap();
 }
 
-fn load_section(character: CharacterId, element: ElementRef) -> Vec<Move> {
+fn load_section(character: CharacterId, element: ElementRef, named: bool) -> Vec<Move> {
     let select = element.select(&ROW_SELECTOR);
     let mut moves: Vec<Move> = vec![];
     for row_raw in select {
         let row_elements = row_raw.select(&ELEMENT_SELECTOR);
-        let move_found = parse_row(row_elements, &character);
+        let move_found = parse_row(row_elements, &character, named);
         moves.push(move_found);
     }
     moves
 }
 
-fn parse_row(row: Select, character_id: &CharacterId) -> Move {
+// an unfortunate special boolean I have to include because the rows are not the same for Normals, Specials etc
+fn parse_row(row: Select, character_id: &CharacterId, named: bool) -> Move {
     let mut row = row.map(|v| v.inner_html());
     let input = row.next().unwrap_or(String::from("")).trim().to_string();
-    let name = row.next().unwrap_or(String::from("")).trim().to_string();
+    let name = if named {
+        row.next().unwrap_or(String::from("")).trim().to_string()
+    } else {
+        input.clone()
+    };
     let damage = row.next().unwrap_or(String::from("")).trim().to_string();
     let guard = row.next().unwrap_or(String::from("")).trim().to_string();
     let startup = row.next().unwrap_or(String::from("")).trim().to_string();
@@ -72,7 +77,7 @@ fn parse_row(row: Select, character_id: &CharacterId) -> Move {
     let risc_gain = row.next().unwrap_or(String::from("")).trim().to_string();
     let risc_loss = row.next().unwrap_or(String::from("")).trim().to_string();
     let regex = get_regex_binding(character_id, input.clone(), name.clone())
-        .unwrap_or(Regex::new(input.as_str()).unwrap());
+        .unwrap_or(Regex::new(format!("r(?i)^({})$", input).as_str()).unwrap());
     Move {
         regex,
         input,
