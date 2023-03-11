@@ -78,7 +78,7 @@ fn parse_row(row: Select, character_id: &CharacterId, named: bool) -> Move {
     let risc_gain = row.next().unwrap_or(String::from("")).trim().to_string();
     let risc_loss = row.next().unwrap_or(String::from("")).trim().to_string();
     let regex = get_regex_binding(character_id, input.clone(), name.clone())
-        .unwrap_or(Regex::new(format!("r(?i)^({})$", input).as_str()).unwrap());
+        .unwrap_or(default_normal_resolver(input.clone()));
     Move {
         regex,
         input,
@@ -99,6 +99,13 @@ fn parse_row(row: Select, character_id: &CharacterId, named: bool) -> Move {
         image: String::from("coming soon!"),
         hitboxes: String::from("coming soon!"),
     }
+}
+
+fn default_normal_resolver(original: impl Into<String>) -> Regex {
+    let original = regex::escape(original.into().as_str());
+    let original = original.replace(".", r"\.?");
+    let input = format!(r"(?i)(^{})$", original);
+    Regex::new(&input).unwrap()
 }
 
 // ensure the below bindings are only initialized once
