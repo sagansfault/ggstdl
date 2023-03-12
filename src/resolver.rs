@@ -299,7 +299,7 @@ fn get_bindings(character_id: CharacterId) -> Vec<(String, String)> {
                 (r"(?i)((hvv|623HS?|dp))", "623H"),
                 (r"(?i)((j.?\s*(vv|623S)))", "j.633H"),
                 (r"(?i)((j.?\s*(hvv|623HS?|dp)))", "j.633H"),
-                (r"(?i)((revolver|br|236K))", "236K"),
+                (r"(?i)((revolver|br|236K)$)", "236K"),
                 (r"(?i)((236KK))", "236KK"),
                 (r"(?i)((j.?\s*(revolver|br|236K)))", "j.236K"),
                 (r"(?i)((j.?\s*(236KK)))", "j.236KK"),
