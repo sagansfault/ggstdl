@@ -293,8 +293,8 @@ fn get_bindings(character_id: CharacterId) -> Vec<(String, String)> {
         },
         CharacterId::SOL => {
             vec![
-                (r"(?i)((gun|flame|236P))", "Gun Flame"),
-                (r"(?i)((feint|214P))", "Gun Flame (Feint)"),
+                (r"(?i)((feint|faint|214P))", "Gun Flame (Feint)"),
+                (r"(?i)(^(gun\s?flame|236P)\s?$)", "Gun Flame"),
                 (r"(?i)((vv|623S))", "623S"),
                 (r"(?i)((hvv|623HS?|dp))", "623H"),
                 (r"(?i)((j.?\s*(vv|623S)))", "j.633H"),
@@ -510,7 +510,7 @@ fn get_bindings(character_id: CharacterId) -> Vec<(String, String)> {
             vec![
                 (r"(?i)((pb|grab|buster|360P|632146P))", "Potemkin Buster"),
                 (r"(?i)((heat|knuckle|hk|623HS?))", "Heat Knuckle"),
-                (r"(?i)(^(fmf|mf|236P|fist|mega)\s?$)", "236P"),
+                (r"(?i)((fmf|mf|236P|forward|fist|mega)\s?$)", "236P"),
                 (r"(?i)((^(back|b)\s*(mega|fist|214P|mf)\s?$))", "214P"),
                 (r"(?i)(((k|kara)\s*(back|b)\s*(mega|fist|214P|mf)))", "2146K~P"),
                 (r"(?i)((slide|head|236S))", "Slide Head"),
