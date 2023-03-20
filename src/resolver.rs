@@ -508,7 +508,7 @@ fn get_bindings(character_id: CharacterId) -> Vec<(String, String)> {
         },
         CharacterId::POTEMKIN => {
             vec![
-                (r"(?i)((pb|grab|buster|360P|632146P))", "Potemkin Buster"),
+                (r"(?i)(^(pb|grab|buster|360P|632146P)$)", "Potemkin Buster"),
                 (r"(?i)((heat|knuckle|hk|623HS?))", "Heat Knuckle"),
                 (r"(?i)((fmf|mf|236P|forward|fist|mega)\s?$)", "236P"),
                 (r"(?i)((^(back|b)\s*(mega|fist|214P|mf)\s?$))", "214P"),
