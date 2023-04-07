@@ -295,9 +295,9 @@ fn get_bindings(character_id: CharacterId) -> Vec<(String, String)> {
             vec![
                 (r"(?i)((feint|faint|214P))", "Gun Flame (Feint)"),
                 (r"(?i)(^(gun\s?flame|236P)\s?$)", "Gun Flame"),
-                (r"(?i)((vv|623S))", "623S"),
+                (r"(?i)((svv|623S))", "623S"),
                 (r"(?i)((hvv|623HS?|dp))", "623H"),
-                (r"(?i)((j.?\s*(vv|623S)))", "j.633H"),
+                (r"(?i)((j.?\s*(svv|623S)))", "j.633H"),
                 (r"(?i)((j.?\s*(hvv|623HS?|dp)))", "j.633H"),
                 (r"(?i)((revolver|br|236K)$)", "236K"),
                 (r"(?i)((236KK))", "236KK"),
