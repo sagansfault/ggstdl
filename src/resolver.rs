@@ -535,7 +535,7 @@ fn get_bindings(character_id: CharacterId) -> Vec<(String, String)> {
                 (r"(?i)((j.?\s*(flip|214K|slido)))", "j.214K"),
                 (r"(?i)((sword|throw|toss|bajoneto|236S))", "236S"),
                 (r"(?i)(((hs?)\s*(sword|throw|toss|bajoneto|236HS?)))", "236H"),
-                (r"(?i)((agresa|(j.?\s*214S)))", "Agresa Ordono"),
+                (r"(?i)((ordono|agress?a|(j.?\s*214S)))", "Agressa Ordono"),
                 (r"(?i)((wind|wiper|214HS?))", "Sabrobato"),
                 (r"(?i)((calvados|63214HS?))", "Calvados"),
                 (r"(?i)((mortobato|reversal|236236S))", "Mortobato"),
