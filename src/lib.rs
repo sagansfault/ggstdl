@@ -42,15 +42,15 @@ impl GGSTDLData {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum CharacterId {
     TESTAMENT, JACKO, NAGORIYUKI, MILLIA, CHIPP, SOL, KY, MAY, ZATO, INO, HAPPYCHAOS, 
-    SIN, BAIKEN, ANJI, LEO, FAUST, AXL, POTEMKIN, RAMLETHAL, GIO, GOLDLEWIS, BRIDGET,
+    SIN, BAIKEN, ANJI, LEO, FAUST, AXL, POTEMKIN, RAMLETHAL, GIO, GOLDLEWIS, BRIDGET, BEDMAN
 }
 
 impl CharacterId {
-    pub const ALL: [CharacterId; 22] = [
+    pub const ALL: [CharacterId; 23] = [
         CharacterId::TESTAMENT, CharacterId::JACKO, CharacterId::NAGORIYUKI, CharacterId::MILLIA, CharacterId::CHIPP, 
         CharacterId::SOL, CharacterId::KY, CharacterId::MAY, CharacterId::ZATO, CharacterId::INO, CharacterId::HAPPYCHAOS, 
         CharacterId::SIN, CharacterId::BAIKEN, CharacterId::ANJI, CharacterId::LEO, CharacterId::FAUST, CharacterId::AXL, 
-        CharacterId::POTEMKIN, CharacterId::RAMLETHAL, CharacterId::GIO, CharacterId::GOLDLEWIS, CharacterId::BRIDGET
+        CharacterId::POTEMKIN, CharacterId::RAMLETHAL, CharacterId::GIO, CharacterId::GOLDLEWIS, CharacterId::BRIDGET, CharacterId::BEDMAN
     ];
 }
 
@@ -121,6 +121,7 @@ pub async fn load() -> Result<GGSTDLData, Box<dyn Error>> {
         Character::create(CharacterId::GIO, r"(?i)(gio)", "https://www.dustloop.com/wiki/index.php?title=GGST/Giovanna/Frame_Data"),
         Character::create(CharacterId::GOLDLEWIS, r"(?i)(lewis|gold|goldlewis|gl|dick)", "https://www.dustloop.com/wiki/index.php?title=GGST/Goldlewis_Dickinson/Frame_Data"),
         Character::create(CharacterId::BRIDGET, r"(?i)(bridget)", "https://www.dustloop.com/wiki/index.php?title=GGST/Bridget/Frame_Data"),
+        Character::create(CharacterId::BEDMAN, r"(?i)(bed)", "https://www.dustloop.com/wiki/index.php?title=GGST/Bedman/Frame_Data"),
     ];
 
     let mut set = JoinSet::new();

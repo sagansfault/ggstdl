@@ -608,6 +608,11 @@ fn get_bindings(character_id: CharacterId) -> Vec<(String, String)> {
                 (r"(?i)((loop|632146S))", "Loop the Loop"),
                 (r"(?i)((motor|killing|632146HS?|return))", "Return of the Killing Machine"),
             ]
+        },
+        CharacterId::BEDMAN => {
+            vec![
+                /* TODO! */
+            ]
         }
     }.into_iter().map(|(k, v)| (String::from(k), String::from(v))).collect::<Vec<(String, String)>>()
 }
