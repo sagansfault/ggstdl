@@ -586,9 +586,9 @@ fn get_bindings(character_id: CharacterId) -> Vec<(String, String)> {
                 (r"(?i)(((gun|mini|skyfish|236S)\s*(level|lv|lvl)?\s*2))", "236S Level 2"),
                 (r"(?i)(((gun|mini|skyfish|236S)\s*(level|lv|lvl)?\s*3))", "236S Level 3"),
 
-                (r"(?i)((dwts|system|reversal|360P|63214P))", "632146P"),
-                (r"(?i)((720P))", "720P"),
-                (r"(?i)((1080P))", "1080P"),
+                (r"(?i)((dwts|system|reversal|360P?|63214P))", "632146P"),
+                (r"(?i)((720P?))", "720P"),
+                (r"(?i)((1080P?))", "1080P"),
 
                 (r"(?i)(^(beam|burn|236236K)\s?$)", "236236K Level 1"),
                 (r"(?i)(((beam|burn|236236K)\s*(level|lv|lvl)?\s*2))", "236236K Level 2"),
