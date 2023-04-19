@@ -544,7 +544,7 @@ fn get_bindings(character_id: CharacterId) -> Vec<(String, String)> {
         CharacterId::GIO => {
             vec![
                 (r"(?i)((kick|214K|sep))", "Sepultura"),
-                (r"(?i)((drill|dog|236K|tro))", "Trovão"),
+                (r"(?i)((drill|dog|236K|tro))", "Trovao"),
                 (r"(?i)((623S|dp|nascente))", "Sol Nascente"),
                 (r"(?i)((214S|sol|poente))", "214S"),
                 (r"(?i)((j.?\s*(214S|sol|poente)))", "j.214S"),
