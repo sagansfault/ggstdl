@@ -7,7 +7,7 @@ use crate::{Move, CharacterId, Character};
 
 // ensure these are only initialized once
 lazy_static::lazy_static! {
-    static ref IMAGE_URL_MATCHER: Regex = Regex::new(r"(?i)src=&quot;(\S+hitbox\.png)").unwrap();
+    static ref IMAGE_URL_MATCHER: Regex = Regex::new(r"(?i)src=&quot;(\S+hitbox1?\.png)").unwrap();
 
     static ref ROW_SELECTOR: Selector = Selector::parse("tbody > tr").unwrap();
     static ref ELEMENT_SELECTOR: Selector = Selector::parse("td").unwrap();
