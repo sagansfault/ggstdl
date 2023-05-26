@@ -613,6 +613,11 @@ fn get_bindings(character_id: CharacterId) -> Vec<(String, String)> {
             vec![
                 /* TODO! */
             ]
+        },
+        CharacterId::ASUKA => {
+            vec![
+                /* TODO! */
+            ]
         }
     }.into_iter().map(|(k, v)| (String::from(k), String::from(v))).collect::<Vec<(String, String)>>()
 }
