@@ -7,7 +7,7 @@ use crate::{Move, CharacterId, Character};
 
 // ensure these are only initialized once
 lazy_static::lazy_static! {
-    static ref IMAGE_URL_MATCHER: Regex = Regex::new(r"(?i)src=&quot;(\S+hitbox1?(_1)?\.png)").unwrap();
+    static ref IMAGE_URL_MATCHER: Regex = Regex::new(r"(?i)src=&quot;(\S+(_1_)?hitbox1?(_1)?\.png)").unwrap();
 
     static ref ROW_SELECTOR: Selector = Selector::parse("tbody > tr").unwrap();
     static ref ELEMENT_SELECTOR: Selector = Selector::parse("td").unwrap();
@@ -117,7 +117,7 @@ fn parse_row(row: Select, character_id: &CharacterId, named: bool) -> Move {
 
 fn default_normal_resolver(original: impl Into<String>) -> Regex {
     let original = regex::escape(original.into().as_str());
-    let original = original.replace(".", ".?"); // the dot is already there, so it is escaped in previous line
+    let original = original.replace('.', ".?"); // the dot is already there, so it is escaped in previous line
     let input = format!(r"(?i)^({})$", original);
     Regex::new(&input).unwrap()
 }
@@ -128,7 +128,7 @@ lazy_static::lazy_static! {
 }
 
 fn get_regex_binding(character_id: &CharacterId, input: String, name: String) -> Option<Regex> {
-    REGEX_MOVE_BINDINGS.get(character_id).map(|v| {
+    REGEX_MOVE_BINDINGS.get(character_id).and_then(|v| {
         for ele in v {
             let regex = &ele.0;
             let bind = &ele.1;
@@ -136,8 +136,8 @@ fn get_regex_binding(character_id: &CharacterId, input: String, name: String) ->
                 return Some(regex.clone());
             }
         }
-        return None;
-    }).flatten()
+        None
+    })
 }
 
 fn get_all_bindings() -> HashMap<CharacterId, Vec<(Regex, String)>> {
