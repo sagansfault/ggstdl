@@ -1,16 +1,24 @@
 use std::collections::HashMap;
+use std::sync::OnceLock;
 
 use regex::Regex;
 use scraper::{Selector, ElementRef, element_ref::Select};
 
 use crate::{Move, CharacterId, Character};
 
-// ensure these are only initialized once
-lazy_static::lazy_static! {
-    static ref IMAGE_URL_MATCHER: Regex = Regex::new(r"(?i)src=&quot;(\S+(_1_)?hitbox1?(_1)?\.png)").unwrap();
+fn get_image_url_matcher() -> &'static Regex {
+    static IMAGE_URL_MATCHER: OnceLock<Regex> = OnceLock::new();
+    IMAGE_URL_MATCHER.get_or_init(|| Regex::new(r"(?i)src=&quot;(\S+(_1_)?hitbox1?(_1)?\.png)").unwrap())
+}
 
-    static ref ROW_SELECTOR: Selector = Selector::parse("tbody > tr").unwrap();
-    static ref ELEMENT_SELECTOR: Selector = Selector::parse("td").unwrap();
+fn get_row_selector() -> &'static Selector {
+    static ROW_SELECTOR: OnceLock<Selector> = OnceLock::new();
+    ROW_SELECTOR.get_or_init(|| Selector::parse("tbody > tr").unwrap())
+}
+
+fn get_element_selector() -> &'static Selector {
+    static ELEMENT_SELECTOR: OnceLock<Selector> = OnceLock::new();
+    ELEMENT_SELECTOR.get_or_init(|| Selector::parse("td").unwrap())
 }
 
 const SECTIONS: [&str; 3] = ["#section-collapsible-3 > table", "#section-collapsible-4 > table", "#section-collapsible-5 > table"];
@@ -46,7 +54,7 @@ pub async fn get_moves(character: &Character) -> Vec<Move> {
 }
 
 fn load_section(character: CharacterId, section: ElementRef, named: bool) -> Vec<Move> {
-    let select = section.select(&ROW_SELECTOR);
+    let select = section.select(get_row_selector());
     let mut moves: Vec<Move> = vec![];
     for row_raw in select {
 
@@ -54,14 +62,14 @@ fn load_section(character: CharacterId, section: ElementRef, named: bool) -> Vec
         let element_html = row_raw.html();
         let mut image = String::from("https://www.dustloop.com/wiki/images/5/55/GGST_Logo.png");
         // we only want the first match
-        if let Some(first) = IMAGE_URL_MATCHER.captures_iter(&element_html).next() {
+        if let Some(first) = get_image_url_matcher().captures_iter(&element_html).next() {
             // the first (0th) capture is always the entire match, I just want the first group as designed in the regex
             if let Some(url) = first.get(1) {
                 image = format!("https://www.dustloop.com{}", url.as_str());
             }
         };
 
-        let row_elements = row_raw.select(&ELEMENT_SELECTOR);
+        let row_elements = row_raw.select(get_element_selector());
         let mut move_found = parse_row(row_elements, &character, named);
         move_found.hitboxes = image;
         moves.push(move_found);
@@ -122,13 +130,13 @@ fn default_normal_resolver(original: impl Into<String>) -> Regex {
     Regex::new(&input).unwrap()
 }
 
-// ensure the below bindings are only initialized once
-lazy_static::lazy_static! {
-    static ref REGEX_MOVE_BINDINGS: HashMap<CharacterId, Vec<(Regex, String)>> = get_all_bindings();
+fn get_loaded_move_bindings() -> &'static HashMap<CharacterId, Vec<(Regex, String)>> {
+    static BINDINGS: OnceLock<HashMap<CharacterId, Vec<(Regex, String)>>> = OnceLock::new();
+    BINDINGS.get_or_init(get_all_bindings)
 }
 
 fn get_regex_binding(character_id: &CharacterId, input: String, name: String) -> Option<Regex> {
-    REGEX_MOVE_BINDINGS.get(character_id).and_then(|v| {
+    get_loaded_move_bindings().get(character_id).and_then(|v| {
         for ele in v {
             let regex = &ele.0;
             let bind = &ele.1;
