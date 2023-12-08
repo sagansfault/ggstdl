@@ -43,16 +43,16 @@ impl GGSTDLData {
 pub enum CharacterId {
     TESTAMENT, JACKO, NAGORIYUKI, MILLIA, CHIPP, SOL, KY, MAY, ZATO, INO, HAPPYCHAOS, 
     SIN, BAIKEN, ANJI, LEO, FAUST, AXL, POTEMKIN, RAMLETHAL, GIO, GOLDLEWIS, BRIDGET, 
-    BEDMAN, ASUKA, JOHNNY
+    BEDMAN, ASUKA, JOHNNY, ELPHELT
 }
 
 impl CharacterId {
-    pub const ALL: [CharacterId; 25] = [
+    pub const ALL: [CharacterId; 26] = [
         CharacterId::TESTAMENT, CharacterId::JACKO, CharacterId::NAGORIYUKI, CharacterId::MILLIA, CharacterId::CHIPP, 
         CharacterId::SOL, CharacterId::KY, CharacterId::MAY, CharacterId::ZATO, CharacterId::INO, CharacterId::HAPPYCHAOS, 
         CharacterId::SIN, CharacterId::BAIKEN, CharacterId::ANJI, CharacterId::LEO, CharacterId::FAUST, CharacterId::AXL, 
         CharacterId::POTEMKIN, CharacterId::RAMLETHAL, CharacterId::GIO, CharacterId::GOLDLEWIS, CharacterId::BRIDGET, 
-        CharacterId::BEDMAN, CharacterId::ASUKA, CharacterId::JOHNNY
+        CharacterId::BEDMAN, CharacterId::ASUKA, CharacterId::JOHNNY, CharacterId::ELPHELT
     ];
 }
 
@@ -126,6 +126,7 @@ pub async fn load() -> Result<GGSTDLData, Box<dyn Error>> {
         Character::create(CharacterId::BEDMAN, r"(?i)(bed)", "https://www.dustloop.com/w/GGST/Bedman/Frame_Data"),
         Character::create(CharacterId::ASUKA, r"(?i)(asuka)", "https://www.dustloop.com/w/GGST/Asuka_R/Frame_Data"),
         Character::create(CharacterId::JOHNNY, r"(?i)(joh?nn?y)", "https://www.dustloop.com/w/GGST/Johnny/Frame_Data"),
+        Character::create(CharacterId::ELPHELT, r"(?i)(el)", "https://www.dustloop.com/w/GGST/Elphelt_Valentine/Frame_Data")
     ];
 
     let mut set = JoinSet::new();
