@@ -8,7 +8,7 @@ use crate::{Move, CharacterId, Character};
 
 fn get_image_url_matcher() -> &'static Regex {
     static IMAGE_URL_MATCHER: OnceLock<Regex> = OnceLock::new();
-    IMAGE_URL_MATCHER.get_or_init(|| Regex::new(r"(?i)src=&quot;(\S+(_1_)?hitbox1?([-_]1)?\.png)").unwrap())
+    IMAGE_URL_MATCHER.get_or_init(|| Regex::new(r"(?i)src=&quot;(\S+(_1_)?(hitbox|HB)1?([-_]1)?\.png)").unwrap())
 }
 
 fn get_row_selector() -> &'static Selector {
@@ -490,9 +490,9 @@ fn get_bindings(character_id: CharacterId) -> Vec<(String, String)> {
                 (r"(?i)((snip|command|grab|236HS?))", "Snip Snip Snip"),
                 (r"(?i)(((j.?)?love|j.?236P))", "j.236P"),
                 (r"(?i)(((j.?)?love|j.?236P)\s*(afro))", "j.236P (With Afro)"),
-                (r"(?i)(((p\s*crow)|214P))", "214P"),
-                (r"(?i)(((k\s*crow)|214K))", "214K"),
-                (r"(?i)(((s\s*crow)|214S))", "214S"),
+                (r"(?i)(((p\s*(scare)?crow)|214P))", "214P"),
+                (r"(?i)(((k\s*(scare)?crow)|214K))", "214K"),
+                (r"(?i)(((s\s*(scare)?crow)|214S))", "214S"),
                 (r"(?i)((bone|wheel|chair|reversal|632146HS?))", "Bone-crushing Excitement"),
                 (r"(?i)(^(236236P|item\s*super)\s?$)", "W-W-What Could This Be?"),
                 (r"(?i)(^(236236236236P)\s?$)", "W-W-W-W-W-W-W-W-W-What Could This Be?"),
