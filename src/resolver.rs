@@ -8,7 +8,7 @@ use crate::{Move, CharacterId, Character};
 
 fn get_image_url_matcher() -> &'static Regex {
     static IMAGE_URL_MATCHER: OnceLock<Regex> = OnceLock::new();
-    IMAGE_URL_MATCHER.get_or_init(|| Regex::new(r"(?i)src=&quot;(\S+(_1_)?hitbox1?(_1)?\.png)").unwrap())
+    IMAGE_URL_MATCHER.get_or_init(|| Regex::new(r"(?i)src=&quot;(\S+(_1_)?hitbox1?([-_]1)?\.png)").unwrap())
 }
 
 fn get_row_selector() -> &'static Selector {
