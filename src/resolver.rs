@@ -257,8 +257,8 @@ fn get_bindings(character_id: CharacterId) -> Vec<(String, String)> {
 
                 (r"(?i)((214HS?|beyblade|kamuriyuki))", "Kamuriyuki"),
 
-                (r"(?i)((623HS?|^shizuriyuki\s?$|^dp\s?$))", "623H"),
-                (r"(?i)((623HS?HS?|((shizuriyuki|dp)\s*(follow|HS?))))", "623HH"),
+                (r"(?i)(^(623HS?|shizuriyuki\s?|dp\s?)$)", "623H"),
+                (r"(?i)((623HS?HS?|((shizuriyuki|dp)\s*(follow|HS?|2))))", "623HH"),
 
                 (r"(?i)((623P|bite|command|blood))", "Bloodsucking Universe"),
 
