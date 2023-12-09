@@ -529,7 +529,7 @@ fn get_bindings(character_id: CharacterId) -> Vec<(String, String)> {
                 (r"(?i)(((flick|f.?d.?b.?)\s*charge))", "F.D.B. (Charged)"),
                 (r"(?i)(((flick|f.?d.?b.?)\s*(hit|reflect)))", "Reflect Projectile"),
                 (r"(?i)((garuda|214HS?))", "Garuda Impact"),
-                (r"(?i)(^(heat tackle|tackle|ht|41236HS?)$)", "Heat Tackle"),
+                (r"(?i)(^(heat tackle|tackle|ht|41236HS?)$)", "41236H"),
                 (r"(?i)((hpb|236236S|heavenly))", "Heavenly Potemkin Buster"),
                 (r"(?i)(^(giganter|kai|632146HS?)\s?$)", "Giganter Kai"),
                 (r"(?i)((giganter|kai|632146HS?)\s*(barrier))", "Giganter Kai (Barrier)"),

@@ -149,5 +149,6 @@ pub async fn load() -> Result<GGSTDLData, Box<dyn Error>> {
 
 #[tokio::test]
 async fn test() {
-    let _ = load().await;
+    let c = load().await;
+    assert!(c.unwrap().find_move("pot", "tackle").is_ok())
 }
