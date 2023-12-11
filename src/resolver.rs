@@ -519,8 +519,8 @@ fn get_bindings(character_id: CharacterId) -> Vec<(String, String)> {
             vec![
                 (r"(?i)(^(pb|grab|buster|360P|632146P)$)", "Potemkin Buster"),
                 (r"(?i)(^(heat knuckle|knuckle|hk|623HS?)$)", "Heat Knuckle"),
-                (r"(?i)(^(fmf|mf|236P|forward|fist|mega)\s?$)", "236P"),
-                (r"(?i)((^(back|b)\s*(mega|fist|214P|mf)\s?$))", "214P"),
+                (r"(?i)(^(fmf|mf|236P|forward|fist|mega|megafist)\s?$)", "236P"),
+                (r"(?i)((^(back|b)\s*(mega|fist|214P|mf|megafist)\s?$))", "214P"),
                 (r"(?i)(((k|kara)\s*(back|b)\s*(mega|fist|214P|mf)))", "2146K~P"),
                 (r"(?i)((slide|head|236S))", "Slide Head"),
                 (r"(?i)(^(hammer|fall|hammer\s*fall|\[4\]6HS?|hf)\s?$)", "Hammer Fall"),
@@ -531,8 +531,8 @@ fn get_bindings(character_id: CharacterId) -> Vec<(String, String)> {
                 (r"(?i)((garuda|214HS?))", "Garuda Impact"),
                 (r"(?i)(^(heat tackle|tackle|ht|41236HS?)$)", "41236H"),
                 (r"(?i)((hpb|236236S|heavenly))", "Heavenly Potemkin Buster"),
-                (r"(?i)(^(giganter|kai|632146HS?)\s?$)", "Giganter Kai"),
-                (r"(?i)((giganter|kai|632146HS?)\s*(barrier))", "Giganter Kai (Barrier)"),
+                (r"(?i)(^(giganter|kai|giganter kai|632146HS?)\s?$)", "Giganter Kai"),
+                (r"(?i)((giganter|kai|giganter kai|632146HS?)\s*(barrier))", "Giganter Kai (Barrier)"),
             ]
         },
         CharacterId::RAMLETHAL => {
