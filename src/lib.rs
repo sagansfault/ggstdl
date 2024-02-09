@@ -144,7 +144,9 @@ pub async fn load() -> Result<GGSTDLData, Box<dyn Error>> {
     }
     println!("Loaded {} moves for {:?} characters", characters.iter().map(|c| c.moves.len()).sum::<usize>(), characters.len());
 
-    Ok(GGSTDLData { characters })
+    Ok(GGSTDLData {
+        characters
+    })
 }
 
 #[tokio::test]

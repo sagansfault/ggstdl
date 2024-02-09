@@ -610,8 +610,8 @@ fn get_bindings(character_id: CharacterId) -> Vec<(String, String)> {
             vec![
                 (r"(?i)(((236(S|(HS?))|yoyo|toss)))", "Stop and Dash (Hit on send)"),
                 (r"(?i)((roll|spin|214K))", "Rolling Movement"),
-                (r"(?i)((dp|star|ship|623P))", "Starship"),
-                (r"(?i)((car|kick|start|heart|236K))", "Kick Start My Heart"),
+                (r"(?i)((dp|starship|623P))", "Starship"),
+                (r"(?i)(^(car|kick|start|heart|236K)$)", "Kick Start My Heart"),
                 (r"(?i)((brake|((car|kick|start|heart|236K)\s*P)))", "Brake"),
                 (r"(?i)((shoot|((car|kick|start|heart|236K)\s*K)))", "Shoot"),
                 (r"(?i)((dive|(j.?\s*236K)))", "Roger Dive"),
