@@ -95,7 +95,7 @@ pub struct Move {
     pub proration: String,
     pub risc_gain: String,
     pub risc_loss: String,
-    pub hitboxes: String
+    pub hitboxes: Vec<String>
 }
 
 pub async fn load() -> Result<GGSTDLData, Box<dyn Error>> {
@@ -151,5 +151,9 @@ pub async fn load() -> Result<GGSTDLData, Box<dyn Error>> {
 
 #[tokio::test]
 async fn test() {
-    let _ = load().await;
+    let load = load().await.unwrap();
+    let character = load.find_character("chaos").unwrap();
+    for move_f in &character.moves {
+        println!("{:?}", move_f.hitboxes);
+    }
 }

@@ -8,7 +8,7 @@ use crate::{Move, CharacterId, Character};
 
 fn get_image_url_matcher() -> &'static Regex {
     static IMAGE_URL_MATCHER: OnceLock<Regex> = OnceLock::new();
-    IMAGE_URL_MATCHER.get_or_init(|| Regex::new(r"(?i)src=&quot;(\S+(_1_)?(hitbox|HB)1?([-_]1)?\.png)").unwrap())
+    IMAGE_URL_MATCHER.get_or_init(|| Regex::new(r"(?i)src=&quot;(\S*(hitbox|HB)\S*\.png)").unwrap())
 }
 
 fn get_row_selector() -> &'static Selector {
@@ -57,21 +57,17 @@ fn load_section(character: CharacterId, section: ElementRef, named: bool) -> Vec
     let select = section.select(get_row_selector());
     let mut moves: Vec<Move> = vec![];
     for row_raw in select {
-
         // the hitbox image urls are in the html element itself (hidden details control)
         let element_html = row_raw.html();
-        let mut image = String::from("https://www.dustloop.com/wiki/images/5/55/GGST_Logo.png");
-        // we only want the first match
-        if let Some(first) = get_image_url_matcher().captures_iter(&element_html).next() {
+        let mut hitboxes = vec![];
+        // get all hitboxes for this move
+        for (_, [url, _]) in get_image_url_matcher().captures_iter(&element_html).map(|c| c.extract()) {
             // the first (0th) capture is always the entire match, I just want the first group as designed in the regex
-            if let Some(url) = first.get(1) {
-                image = format!("https://www.dustloop.com{}", url.as_str());
-            }
-        };
-
+            hitboxes.push(format!("https://www.dustloop.com{}", url));
+        }
         let row_elements = row_raw.select(get_element_selector());
         let mut move_found = parse_row(row_elements, &character, named);
-        move_found.hitboxes = image;
+        move_found.hitboxes = hitboxes;
         moves.push(move_found);
     }
     moves
@@ -119,7 +115,7 @@ fn parse_row(row: Select, character_id: &CharacterId, named: bool) -> Move {
         proration,
         risc_gain,
         risc_loss,
-        hitboxes: String::from("https://www.dustloop.com/wiki/images/5/55/GGST_Logo.png"),
+        hitboxes: vec![],
     }
 }
 
