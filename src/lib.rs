@@ -43,16 +43,16 @@ impl GGSTDLData {
 pub enum CharacterId {
     TESTAMENT, JACKO, NAGORIYUKI, MILLIA, CHIPP, SOL, KY, MAY, ZATO, INO, HAPPYCHAOS, 
     SIN, BAIKEN, ANJI, LEO, FAUST, AXL, POTEMKIN, RAMLETHAL, GIO, GOLDLEWIS, BRIDGET, 
-    BEDMAN, ASUKA, JOHNNY, ELPHELT
+    BEDMAN, ASUKA, JOHNNY, ELPHELT, ABA
 }
 
 impl CharacterId {
-    pub const ALL: [CharacterId; 26] = [
+    pub const ALL: [CharacterId; 27] = [
         CharacterId::TESTAMENT, CharacterId::JACKO, CharacterId::NAGORIYUKI, CharacterId::MILLIA, CharacterId::CHIPP, 
         CharacterId::SOL, CharacterId::KY, CharacterId::MAY, CharacterId::ZATO, CharacterId::INO, CharacterId::HAPPYCHAOS, 
         CharacterId::SIN, CharacterId::BAIKEN, CharacterId::ANJI, CharacterId::LEO, CharacterId::FAUST, CharacterId::AXL, 
         CharacterId::POTEMKIN, CharacterId::RAMLETHAL, CharacterId::GIO, CharacterId::GOLDLEWIS, CharacterId::BRIDGET, 
-        CharacterId::BEDMAN, CharacterId::ASUKA, CharacterId::JOHNNY, CharacterId::ELPHELT
+        CharacterId::BEDMAN, CharacterId::ASUKA, CharacterId::JOHNNY, CharacterId::ELPHELT, CharacterId::ABA
     ];
 }
 
@@ -126,7 +126,8 @@ pub async fn load() -> Result<GGSTDLData, Box<dyn Error>> {
         Character::create(CharacterId::BEDMAN, r"(?i)(bed)", "https://www.dustloop.com/w/GGST/Bedman/Frame_Data"),
         Character::create(CharacterId::ASUKA, r"(?i)(asuka)", "https://www.dustloop.com/w/GGST/Asuka_R/Frame_Data"),
         Character::create(CharacterId::JOHNNY, r"(?i)(joh?nn?y)", "https://www.dustloop.com/w/GGST/Johnny/Frame_Data"),
-        Character::create(CharacterId::ELPHELT, r"(?i)(el)", "https://www.dustloop.com/w/GGST/Elphelt_Valentine/Frame_Data")
+        Character::create(CharacterId::ELPHELT, r"(?i)(el)", "https://www.dustloop.com/w/GGST/Elphelt_Valentine/Frame_Data"),
+        Character::create(CharacterId::ABA, r"(?i)(a.?b.?a.?)", "https://www.dustloop.com/w/GGST/A.B.A")
     ];
 
     let mut set = JoinSet::new();
@@ -151,9 +152,9 @@ pub async fn load() -> Result<GGSTDLData, Box<dyn Error>> {
 
 #[tokio::test]
 async fn test() {
-    let load = load().await.unwrap();
-    let character = load.find_character("chaos").unwrap();
-    for move_f in &character.moves {
-        println!("{:?}", move_f.hitboxes);
-    }
+    let _load = load().await.unwrap();
+    // let character = load.find_character("chaos").unwrap();
+    // for move_f in &character.moves {
+    //     println!("{:?}", move_f.hitboxes);
+    // }
 }
