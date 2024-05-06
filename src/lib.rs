@@ -12,7 +12,7 @@ pub enum GGSTDLError {
 }
 
 impl Display for GGSTDLError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         match self {
             GGSTDLError::UnknownCharacter => write!(f, "Unknown character"),
             GGSTDLError::UnknownMove => write!(f, "Unknown move"),
