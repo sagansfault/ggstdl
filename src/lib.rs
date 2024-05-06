@@ -1,4 +1,5 @@
-use std::{error::Error, fmt::Display};
+use std::{error::Error, fmt, fmt::Display};
+use std::fmt::Formatter;
 
 use regex::Regex;
 use tokio::task::JoinSet;
@@ -44,6 +45,12 @@ pub enum CharacterId {
     TESTAMENT, JACKO, NAGORIYUKI, MILLIA, CHIPP, SOL, KY, MAY, ZATO, INO, HAPPYCHAOS, 
     SIN, BAIKEN, ANJI, LEO, FAUST, AXL, POTEMKIN, RAMLETHAL, GIO, GOLDLEWIS, BRIDGET, 
     BEDMAN, ASUKA, JOHNNY, ELPHELT, ABA
+}
+
+impl Display for CharacterId {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "{:?}", self)
+    }
 }
 
 impl CharacterId {
