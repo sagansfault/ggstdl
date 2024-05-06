@@ -143,7 +143,6 @@ pub async fn load() -> Result<GGSTDLData, Box<dyn Error>> {
         };
         characters.push(character);
     }
-    println!("Loaded {} moves for {:?} characters", characters.iter().map(|c| c.moves.len()).sum::<usize>(), characters.len());
 
     Ok(GGSTDLData {
         characters
