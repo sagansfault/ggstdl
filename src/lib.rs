@@ -23,7 +23,7 @@ impl Error for GGSTDLError {}
 
 #[derive(Debug)]
 pub struct GGSTDLData {
-    characters: Vec<Character>
+    pub characters: Vec<Character>
 }
 
 impl GGSTDLData {
